@@ -1,10 +1,10 @@
 ---
 layout:     post                    # 使用的布局（不需要改）
 title:      开篇               # 标题 
-subtitle:   2017年9月7日，我的个人博客破壳了。 #副标题
+subtitle:   2017年9月7日，我的个人博客破壳了 #副标题
 date:       2017-09-07              # 时间
 author:     ZY                      # 作者
-header-img: img/h-start.jpg    #这篇文章标题背景图片
+header-img: img/banner/hello-world.jpg    #这篇文章标题背景图片
 catalog: true                       # 是否归档
 tags:                               #标签
     - 生活

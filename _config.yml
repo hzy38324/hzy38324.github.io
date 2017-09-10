@@ -1,10 +1,10 @@
 # Site settings
 title: Bridge for You
-SEOTitle: Bridge for You | 泽扬的博客
+SEOTitle: Bridge for You
 header-img: img/index-banner.jpg
 email: 2668612407@qq.com
-description: "泽扬的博客"
-keyword: "Bridge, Blog, Java, JVM, Spring"
+description: "Bridge for You"
+keyword: "Blog, Java, JVM, Spring"
 url: "http://hzy38324.github.io"          # your host, for absolute URL
 baseurl: ""      # for example, '/blog' if your blog hosted on 'host/blog'
 github_repo: "https://github.com/hzy38324/hzy38324.github.io.git" # you code repository
