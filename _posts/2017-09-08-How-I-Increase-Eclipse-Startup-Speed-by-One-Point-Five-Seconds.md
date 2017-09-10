@@ -277,5 +277,17 @@ openFile
 
 以上，希望能对你有所帮助。
 
+# 参考内容
+- [《深入理解Java虚拟机》][2]
+- [Java HotSpot VM Options][3]
+- [Java Platform, Standard Edition Troubleshooting Guide - Diagnostic Tools][4]
+- [HotSpot Virtual Machine Garbage Collection Tuning Guide][5] 
+- [Tuning Java Virtual Machines (JVMs)][6] 
+
 
   [1]: http://blog.csdn.net/hzy38324/article/details/77799115
+  [2]: https://www.amazon.cn/%E5%9B%BE%E4%B9%A6/dp/B00D2ID4PK/ref=redir_mobile_desktop?ie=UTF8&pi=SS115
+  [3]: http://www.oracle.com/technetwork/articles/java/vmoptions-jsp-140102.html
+  [4]: http://docs.oracle.com/javase/8/docs/technotes/guides/troubleshoot/tooldescr.html#diagnostic_tools
+  [5]: http://docs.oracle.com/javase/8/docs/technotes/guides/vm/gctuning/
+  [6]: https://docs.oracle.com/cd/E13222_01/wls/docs81/perform/JVMTuning.html
