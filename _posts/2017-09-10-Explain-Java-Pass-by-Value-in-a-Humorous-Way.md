@@ -30,7 +30,7 @@ Dog myDog = new Dog("旺财");
 changeName(myDog);
 System.out.println(myDog.getName());
 
-public void changeName(dog) {
+public void changeName(Dog dog) {
    dog = new Dog();
    dog.setName("小强");
 }
