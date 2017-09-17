@@ -14,6 +14,7 @@ tags:                               #标签
     - Java
     - Java EE
 ---
+
 大雄是一个刚踏入社会的95后，热爱编程的他，在毕业之后进入了一家互联网公司，负责公司内一个电商项目的开发工作。  
 为了让大雄更快的成长，公司安排了哆啦作为大雄的导师。
 
@@ -34,7 +35,7 @@ tags:                               #标签
   - ...
 
 “哆啦说要打印到文件，那就用FileLogger吧！”  
-于是，大雄先在支付接口的代码中，加入了日志打印：
+于是，大雄先在支付接口的代码中，加入了日志打印（**本文使用的代码，可以到 [SpringNovel][1] 下载**）：
 ```java
 public class PaymentAction {
 	
@@ -109,7 +110,7 @@ public class LoggerFactory {
 # 使用Spring改造代码
 第二天大雄早早地就来到了公司，他迫不及待地想把原来的代码使用Spring的方式改造一遍。  
 
-在使用[gradle][1]引入了必要的jar包后，大雄对原来的PaymentAction做了修改，不再在类内部new logger对象，同时给PaymentAction添加了一个构造函数，方便Spring进行注入：
+在使用[gradle][2]引入了必要的jar包后，大雄对原来的PaymentAction做了修改，不再在类内部new logger对象，同时给PaymentAction添加了一个构造函数，方便Spring进行注入：
 ```java
 public class PaymentAction {
 	
@@ -230,14 +231,15 @@ public void mockDeleteOrderTest() {
 # 参考内容
 
  - 《Spring in Action》
- - [tutorialspoint - Spring Tutorial][2]
- - [javatpoint - Spring Tutorial][3]
- - [Why does one use dependency injection?][4]
- - [Dependency Injection and Unit Testing][5]
+ - [tutorialspoint - Spring Tutorial][3]
+ - [javatpoint - Spring Tutorial][4]
+ - [Why does one use dependency injection?][5]
+ - [Dependency Injection and Unit Testing][6]
 
 
-  [1]: https://gradle.org/
-  [2]: https://www.tutorialspoint.com/spring/
-  [3]: https://www.javatpoint.com/spring-tutorial
-  [4]: https://stackoverflow.com/questions/14301389/why-does-one-use-dependency-injection
-  [5]: https://javaranch.com/journal/200709/dependency-injection-unit-testing.html
+  [1]: https://github.com/hzy38324/SpringNovel
+  [2]: https://gradle.org/
+  [3]: https://www.tutorialspoint.com/spring/
+  [4]: https://www.javatpoint.com/spring-tutorial
+  [5]: https://stackoverflow.com/questions/14301389/why-does-one-use-dependency-injection
+  [6]: https://javaranch.com/journal/200709/dependency-injection-unit-testing.html
