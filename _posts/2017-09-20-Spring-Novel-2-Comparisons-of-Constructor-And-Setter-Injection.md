@@ -25,7 +25,7 @@ tags:                               #标签
 
 # 越来越庞大的构造函数
 一天，晨会过后，哆啦对大雄说，“大雄，我们的订单接口和支付接口都已经非常完善了，现在需要**在支付完成时更新一下订单的状态**，你看看这个需求如何实现。”  
-“这个好办，只需要给支付接口添加一个新的依赖，给它注入OrderDao就可以了。”  
+“这个好办，只需要给支付接口添加一个新的依赖IOrderDao，然后把OrderDao注入进去就可以了。”  
 “好小子，张嘴一个‘依赖’，闭嘴一个‘注入’，术语说的挺溜的呀”  
 “那是，你等着，马上搞定这个需求”，说完，大雄就火急火燎地写代码去了。
 
@@ -82,7 +82,18 @@ public class PaymentAction {
 
 很快，Review结果回来了：
 
- - 如果后面PaymentAction需要依赖更多的接口，比如短信发送接口、支付宝接口、微信支付接口等等，你还是往构造函数里面加吗？假如**依赖了20个接口，那你的构造函数就会有20个参数**，这样的代码优雅吗？ 
+ - 如果后面PaymentAction需要依赖更多的接口，比如短信发送接口、支付宝接口、微信支付接口等等，你还是往构造函数里面加吗？假如**依赖了20个接口，那你的构造函数就会有20个参数**，就像下面这段代码，你觉得这样的代码优雅吗？ 
+```java
+public PaymentAction(ILogger logger, IOrderDao orderDao, ISMSUtil smsUtil, IPaybal paybal, IWechatPay wechatPay, ...) {
+    super();
+    this.logger = logger;
+    this.orderDao = orderDao;
+    this.smsUtil = smsUtil;
+    this.paybal = paybal;
+    this.wechatPay = wechatPay;
+    ...
+}
+```
 
 哆啦的话再一次给大雄浇了一盘冷水，“为啥每次review都不能一次过......”
 
@@ -145,11 +156,12 @@ real update order after payment, orderId is 123456
 “完美！setter注入其实也没什么嘛！”，大雄大叫道，偷偷瞄了哆啦一眼，哆啦此时正专注地看着自己的屏幕，似乎没有觉察到这边厢亢奋的大雄。  
 
 # 空指针异常！
-大雄再一次准备给哆啦提交review请求，在食指即将按下回车的那一刹那，他仿佛拥有了窥视未来的能力，他看到哆啦拿着装满冷水的脸盆，朝他洒过来....“啊，不对劲，那这样构造器注入岂不是完败于setter注入了？不科学呀。。。”
+大雄再一次准备给哆啦提交review请求，在食指即将按下回车的那一刹那，他仿佛拥有了窥视未来的能力，他看到哆啦拿着装满冷水的脸盆，朝他洒过来.... “啊，不对劲，那这样构造器注入岂不是完败于setter注入了？不科学呀。。。setter注入肯定有什么局限是我还没发现的.....”
 
-“Spring容器初始化对象时，会去调用对象的构造函数，此时如果采用构造器注入，并且xml里没有配置对应的&lt;constructor&gt;标签，那么由于没有与之匹配的构造函数，注入应该会失败；而set注入，是会提示初始化失败呢，还是直接设为null呢？”，大雄的脑袋飞快地翻转着。
+“Spring容器初始化对象时，会去调用对象的构造函数，此时如果采用构造器注入，并且xml里没有配置对应的&lt;constructor&gt;标签，那么由于没有与之匹配的构造函数，注入应该会失败”  
+“而setter注入，如果没有配置&lt;property&gt;，是会提示初始化失败呢，还是压根就不注入呢？”，大雄的脑袋飞快地翻转着。
 
-“修改一下代码验证一下不就知道了！”
+“修改一下代码，验证一下不就知道了！”
 于是大雄首先把&lt;constructor&gt;标签注释掉：
 ```java
 <bean id="paymentAction_setInjection" class="com.springnovel.payment.springxml.PaymentAction_SetInjection">
@@ -174,7 +186,7 @@ No default constructor found;
 	<!--<property name="orderDao" ref="orderDao"></property>-->
 </bean>
 ```
-重新执行测试用例，“啊，报错了！ 空指针异常！：
+重新执行测试用例，啊，报错了！ 空指针异常！：
 ```
 java.lang.NullPointerException
 	at com.springnovel.payment.springxml.PaymentAction_SetInjection.updateOrderAfterPayment(PaymentAction_SetInjection.java:34)
