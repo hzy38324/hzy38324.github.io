@@ -29,7 +29,7 @@ tags:                               #标签
 “好小子，张嘴一个‘依赖’，闭嘴一个‘注入’，术语说的挺溜的呀”  
 “那是，你等着，马上搞定这个需求”，说完，大雄就火急火燎地写代码去了。
 
-大雄给PaymentAction加了一个成员变量orderDao，然后新建了一个构造函数，把orderDao注入到PaymentAction里面去，接着写了一个updateOrderAfterPayment方法，调用orderDao的方法更新订单（**本文使用的代码，可以到 [SpringNovel][2] 下载**）：
+大雄给PaymentAction加了一个成员变量orderDao，然后新建了一个构造函数，把orderDao注入到PaymentAction里面去，接着写了一个updateOrderAfterPayment方法，调用orderDao的方法更新订单（**本文使用的代码，可以到 [SpringNovel][2] 下载，欢迎加星**）：
 ```java
 public class PaymentAction {
 
