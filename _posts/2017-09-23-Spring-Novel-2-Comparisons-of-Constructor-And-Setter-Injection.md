@@ -27,7 +27,7 @@ tags:                               #标签
 一天，晨会过后，哆啦对大雄说，“大雄，我们的订单接口和支付接口都已经非常完善了，现在需要**在支付完成时更新一下订单的状态**，你看看这个需求如何实现。”  
 “这个好办，只需要给支付接口添加一个新的依赖IOrderDao，然后把OrderDao注入进去就可以了。”  
 “好小子，张嘴一个‘依赖’，闭嘴一个‘注入’，术语说的挺溜的呀”  
-“那是，你等着，马上搞定这个需求”，说完，大雄就火急火燎地写代码去了。 
+“那是，你等着，马上搞定这个需求”，说完，大雄就火急火燎地写代码去了。
 
 大雄给PaymentAction加了一个成员变量orderDao，然后新建了一个构造函数，把orderDao注入到PaymentAction里面去，接着写了一个updateOrderAfterPayment方法，调用orderDao的方法更新订单（**本文使用的代码，可以到 [SpringNovel][2] 下载，欢迎加星**）：
 ```java
@@ -285,7 +285,7 @@ Property 'orderDao' is required for bean 'paymentAction_setInjection'
 
 
   [1]: http://bridgeforyou.cn/2017/09/16/Spring-Novel-1-Why-Use-Dependency-Injection/
-  [2]: http://blog.csdn.net/hzy38324/article/details/72793035#t1
+  [2]: https://github.com/hzy38324/SpringNovel
   [3]: http://blog.csdn.net/hzy38324/article/details/72793035#t1
   [4]: http://bridgeforyou.cn/
   [5]: https://stackoverflow.com/questions/21218868/explain-why-constructor-inject-is-better-than-other-options
