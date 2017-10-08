@@ -1,7 +1,7 @@
 ---
 layout:     post                    # 使用的布局（不需要改）
-title:      用小说的形式讲解Spring（3） —— Xml、注解和Java Config到底选哪个               # 标题 
-subtitle:   有时候选择多了，也会带来幸福的烦恼 #副标题
+title:      用小说的形式讲解Spring（3） —— xml、注解和Java Config到底选哪个               # 标题 
+subtitle:   有时候选择多了，也会带来烦恼 #副标题
 date:       2017-10-03              # 时间
 author:     ZY                      # 作者
 header-img: img/banner/spring-novel-3-annotaion-based-configuration-and-java-based-configuration.jpg    #这篇文章标题背景图片
@@ -13,35 +13,34 @@ tags:                               #标签
 ---
 本集概要：  
 
- - 为什么说Xml配置是类型不安全的配置方式？
+ - 为什么说xml配置是类型不安全的配置方式？
  - 如何使用注解进行配置？
  - 注解配置是万能的吗？
  - 如何使用Java Config进行配置？
- - Xml、注解、Java Config，到底该如何选择？
+ - xml、注解、Java Config，到底该如何选择？
 
  ----------
  
-大雄一脸懵逼，心想，“我不就改了一处地方，怎么就把服务器给整挂了呢”。  
-大雄仔细地看了一下自己改的代码：
+大雄一脸懵逼，心想，“我不就改了一处地方，怎么就把服务器给整挂了呢”，他仔细地看了一下自己改的代码：
 ```xml
 <bean id="serverLogger" class="com.springnovel.perfectlogger.CosoleLogger"/>
 ```
 “啊！！原来是CosoleLogger拼错了...”
 
-# 类型不安全的Xml配置
+# 类型不安全的xml配置
 到了公司，大雄跟哆啦讲了自己干的这件蠢事。  
 “小伙子，早上没睡醒吧，哈哈哈”  
 “额，你还笑得出来”  
-“嘿嘿嘿，其实吧，我有办法让你在没睡醒的时候也不会犯这种错误”  
+“其实吧，我有办法让你在没睡醒的时候也不会犯这种错误”  
 “啥办法，该不会是让我喝咖啡吧...”  
 “喝咖啡也没我这个办法管用，你小子之前学Spring的时候，不会只知道用xml这种**类型不安全**的方式来配置吧？”  
 “噢，好像还有其他配置方式...注解？还有Java Config...啊！我明白你的意思了，使用注解和Java Config，这样在我拼写错的时候，由于找不到这类，编译都不会通过，我也就知道我拼写错了！”  
-“就是罗，而且这只是其他配置方式优于Xml配置的一点，你用过之后就会发现他们有更多的优点了”  
+“就是罗，而且这只是其他配置方式优于xml配置的一点，你用过之后就会发现他们有更多的优点了”  
 “好，我这就试试用注解方式改造一下我们的代码！”  
 
 # 通过注解进行自动化装配
 大雄决定先把原来PaymentAction中，使用xml配置的OrderDao，改为通过注解进行配置。  
-首先，大雄给OrderDao加上@Component注解,表明这个类是一个组件类，告诉Spring要为这个class创建bean，并注入给IOrderDao：
+首先，大雄给OrderDao加上@Component注解,表明这个类是一个组件类，告诉Spring要为这个class创建bean，并注入给IOrderDao（**本文使用的代码，可以到 [SpringNovel](https://github.com/hzy38324/SpringNovel) 下载，欢迎加星**）：
 ```java
 @Component
 public class OrderDao implements IOrderDao{
@@ -115,7 +114,7 @@ real add order, order type is create_sub
 “啊对，还有一种配置方式......Java Config！”  
 
 # 使用Java代码进行注入
-“啊啊，我有种预感，这种配置方式是**自由度最高**的，因为他叫Java Config，顾名思义，就是通过Java代码的方式进行注入，终于可以自己写代码进行注入了，Xml和注解都感觉好没劲！”大雄兴奋的说道，摩拳擦掌。  
+“啊啊，我有种预感，这种配置方式是**自由度最高**的，因为他叫Java Config，顾名思义，就是通过Java代码的方式进行注入，终于可以自己写代码进行注入了，xml和注解都感觉好没劲！”大雄兴奋的说道，摩拳擦掌。  
 “哈哈，看来你骨子里面还是特别热爱编码的嘛！”   
 “那是！”  
 
@@ -179,12 +178,20 @@ ConsoleLogger: pay end
 - xml配置相对于其他两种方式来说，几乎没什么优势，唯一的优势就是**修改后不需要重新编译**，因此**对于一些经常切换实现类的对象，可以采用xml的方式进行配置**。还有就是由于xml是Spring一开始就提供的配置方式，因此很多旧代码还是采用xml，所以在维护旧代码时会免不了用到xml。
 - **注解用起来非常地简洁，代码量十分少，因此是项目的第一选择**。只有当需要注入代码不是自己维护的第三方jar包中的类时，或者需要更为灵活地注入，比如说需要调用某个接口，查询数据，然后把这个数据赋值给要注入的对象，那么这时候就需要用到Java Config。
 
+# 未完待续
+整合了Spring IOC功能的商城项目在国庆前一天顺利上线，胖虎十分高兴，请大家伙去他家吃大餐。 
+ 
+好多同事都听说了大雄的“丰功伟绩”，纷纷过来敬酒，不会挡酒的大雄很快喝的醉醺醺的，迷迷糊糊中，他似乎看到了胖虎站了起来，说道，“商城项目终于上线了，国庆回来后，我们有一个更重要的项目，经过这次商城项目的经验，公司决定从一开始就采用SpringMVC进行开发，哆啦担任项目经理，大雄是开发组长......”  
+
+"啊....."，大雄朦朦胧胧的双眼似乎看到了静香向他投来崇拜的目光，大雄痴痴地笑着，突然，他眼里出现了穿着比基尼的静香，“啊，静香，你这件比基尼...真...真好看...”
+![](/img/post/2017-10-03-Spring-Novel-3-Annotaion-Based-Configuration-and-Java-Based-Configuration/jingxiang.jpg)
+
 # 参考内容
 
 - 《Spring in Action》
 - [Spring Dependency Injection Styles - Why I love Java based configuration - codecentric AG Blog][1]
 - [Spring Framework – XML vs. Annotations - DZone Java][2]
-- [Xml configuration versus Annotation based configuration][3]
+- [xml configuration versus Annotation based configuration][3]
 - [Spring annotation-based DI vs xml configuration?][4]
 - [Java Dependency injection: XML or annotations][5]
 
