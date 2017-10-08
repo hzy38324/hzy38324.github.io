@@ -4,7 +4,7 @@ title:      用小说的形式讲解Spring（3） —— xml、注解和Java Con
 subtitle:   有时候选择多了，也会带来烦恼 #副标题
 date:       2017-10-03              # 时间
 author:     ZY                      # 作者
-header-img: img/banner/spring-novel-3-annotaion-based-configuration-and-java-based-configuration.jpg    #这篇文章标题背景图片
+header-img: img/banner/spring-novel-3-annotaion-based-configuration-and-java-based-configuration.png    #这篇文章标题背景图片
 catalog: true                       # 是否归档
 tags:                               #标签
     - Spring
