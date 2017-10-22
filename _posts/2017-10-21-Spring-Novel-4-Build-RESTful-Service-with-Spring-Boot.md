@@ -20,7 +20,7 @@ tags:                               #标签
 “自己到Spring官网上找去，你小子整天就想不劳而获...”，哆啦心里暗自说道，其实我就没写过总结文档。
 
 # 原料
-“哎，我最讨厌看英文文档了”，打开[Spring官网](https://spring.io/)，看到一堆密密麻麻的英文时，大雄的头顶仿佛有很多只三眼乌鸦飞过。  
+“哎，我最讨厌看英文文档了”，打开[Spring官网](https://spring.io/)，看到一堆密密麻麻的英文时，大雄的头顶仿佛有很多只乌鸦飞过。  
 跟随着链接，大雄找到了一个Spring Boot的[Get Started](https://spring.io/guides/gs/spring-boot/)教程，“来吧，可恶的英文，我要hello world了！”  
 大雄在机子上准备好了JDK1.8和Gradle4.1，开始按照教程搭建他的Spring Boot。  
 
@@ -205,7 +205,7 @@ public class Application {
 “Where where, 人家文档写的好嘛！”  
 “哎哟呵，这么谦虚。 对了，我们这个tiny facebook后面肯定少不了要提供很多RESTful接口的，你预研一下如何实现Get啊Post啊Put啊Delete啊啥啥啥的接口吧。”  
 “这还不简单，现在那个接口，默认是Get方式，要改成其他方式，不就加上注解指定一下就好啦！”  
-“实现是很简单，但你知道RESTful和传统的SOAP有什么区别吗？为什么RESTful这么流行？怎样写好一个RESTful接口？Post和Put有什么区别......”哆啦又开启了唐僧叨叨逼模式...  
+“实现是很简单，但你知道RESTful和传统的SOAP有什么区别吗？为什么RESTful这么流行？怎样写好一个RESTful接口？Post和Put有什么区别......”，哆啦又开启了唐僧叨叨逼模式...  
 ......
 
 # 参考内容
