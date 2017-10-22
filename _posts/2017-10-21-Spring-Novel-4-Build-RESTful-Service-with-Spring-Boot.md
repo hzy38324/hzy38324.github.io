@@ -1,7 +1,7 @@
 ---
 layout:     post                    # 使用的布局（不需要改）
 title:      用小说的形式讲解Spring（4） —— 使用Spring Boot创建NoXml的Web应用              # 标题 
-subtitle:    #副标题
+subtitle:   Spring Boot的海底捞精神 #副标题
 date:       2017-10-21              # 时间
 author:     ZY                      # 作者
 header-img: img/banner/spring-novel-3-annotaion-based-configuration-and-java-based-configuration.jpg    #这篇文章标题背景图片
@@ -11,6 +11,8 @@ tags:                               #标签
     - Java
     - Spring Boot
 ---
+>本文中的项目使用[Github](https://github.com/hzy38324/tiny-facebook)托管，已打[Tag](https://github.com/hzy38324/tiny-facebook/releases)，执行git checkout v1.0 即可获取本文所涉及的代码。
+
 经过了国庆七天长假的休息，回到公司的大雄已经打满了鸡血，准备在新的项目 —— tiny facebook，大干一场。第一次被委以重任，大雄心里还是有点小紧张的...  
 
 “从目前社区的反馈来看，Spring Boot相比于Spring而言，可以大大提高开发的效率，我们这个tiny facebook，就用Spring Boot开发吧！”，哆啦对大雄说。  
