@@ -1,7 +1,7 @@
 ---
 layout:     post                    # 使用的布局（不需要改）
 title:      用小说的形式讲解Spring（4） —— 使用Spring Boot创建NoXml的Web应用              # 标题 
-subtitle:   Spring Boot的海底捞精神 #副标题
+subtitle:   大道至简·Spring Boot #副标题
 date:       2017-10-21              # 时间
 author:     ZY                      # 作者
 header-img: img/banner/spring-novel-3-annotaion-based-configuration-and-java-based-configuration.jpg    #这篇文章标题背景图片
@@ -12,6 +12,15 @@ tags:                               #标签
     - Spring Boot
 ---
 >本文中的项目使用[Github](https://github.com/hzy38324/tiny-facebook)托管，已打[Tag](https://github.com/hzy38324/tiny-facebook/releases)，执行git checkout v1.0 即可获取本文所涉及的代码。
+
+本集概要：
+
+- 怎样用Spring Boot搭建Web应用？
+- Spring Boot和Spring相比，有什么优势？
+- Spring Boot的起步依赖和自动配置是什么东西？
+- 为什么不需要配置Servlet容器也可以启动Web应用？
+
+----------
 
 经过了国庆七天长假的休息，回到公司的大雄已经打满了鸡血，准备在新的项目 —— tiny facebook，大干一场。第一次被委以重任，大雄心里还是有点小紧张的...  
 
