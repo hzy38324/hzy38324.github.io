@@ -205,7 +205,7 @@ Level2，真正将HTTP作为了一种传输协议，最直观的一点就是Leve
 
 Level3，关于这一层，有一个古怪的名词，叫HATEOAS（Hypertext As The Engine Of Application State），中文翻译为“将超媒体格式作为应用状态的引擎”，核心思想就是每个资源都有它的状态，不同状态下，可对它进行的操作不一样。理解了这一层，再来看看REST的全称，Representational State Transfer，中文翻译为“表述性状态转移”，是不是好理解多了？  
 
-Level3的Restful API，给使用者带来了很大的遍历，使用者**只需要知道如何获取资源的入口**，**之后的每个URI都可以通过请求获得，无法获得就说明无法执行那个请求**。  
+Level3的Restful API，给使用者带来了很大的便利，使用者**只需要知道如何获取资源的入口**，**之后的每个URI都可以通过请求获得，无法获得就说明无法执行那个请求**。  
 
 现在绝大多数的RESTful接口都做到了Level2的层次，做到Level3的比较少。当然，**这个模型并不是一种规范，只是用来理解Restful的工具**。所以，做到了Level2，也就是面向资源和使用Http动词，就已经很Restful了。**Restful本身也不是一种规范**，我比较倾向于用"**风格**"来形容它。如果你想深入了解Level3，可以阅读《Rest in Practice》第五章。  
 
