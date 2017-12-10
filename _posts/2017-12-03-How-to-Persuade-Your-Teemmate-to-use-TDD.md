@@ -11,7 +11,7 @@ tags:                               #标签
     - 测试
     - 编程通识
 ---
-TDD（Test-driven development），也就是我们常说的“测试驱动开发”，是由 *[Kent Beck](https://en.wikipedia.org/wiki/Kent_Beck)* 在1996年提出的概念。然而TDD这个术语，经常被人挂在嘴边，然而真正在项目实施，却寥寥无几。  
+TDD（Test-driven development），也就是我们常说的“测试驱动开发”，是由 *[Kent Beck](https://en.wikipedia.org/wiki/Kent_Beck)* 在1996年提出的概念。TDD这个术语，经常被人挂在嘴边，然而真正在项目实施，却寥寥无几。  
   
 是TDD对开发者要求太高？还是TDD根本就不值得去做？  
 非也。为了让大家对TDD有一个具体而亲切的认识，我先给大家举一个在编程中使用TDD进行开发的实际例子。
