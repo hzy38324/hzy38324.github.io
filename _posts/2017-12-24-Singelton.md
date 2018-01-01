@@ -243,6 +243,16 @@ public class SingletonHungryManTest {
     }
 }
 ```
+防止反射攻击很简单，只需要在构造函数里加上个判断即可，参考[StackOverflow](https://stackoverflow.com/questions/6994393/singleton-how-to-stop-create-instance-via-reflection)里的实现：
+```java
+    private SingletonHungryMan() {
+        if(SingletonHungryMan.INSTANCE != null) {
+            throw new RuntimeException("Creating of this object is not allowed.");
+        }
+    }
+```
+防止类加载器攻击，目前还没找到方法...
+
 # 可序列化对象的单例
 可序列化对象，在进行序列化之后，可以进行多次的反序列化，这时候如果要维持单例，就要实现readResolve方法：
 ```java
@@ -262,6 +272,8 @@ public class SingletonSerializable implements java.io.Serializable {
 ```
 # 小结
 实现单例模式，其实没有那么复杂，我们要考虑的只是如何防止其他开发人员在**常规操作**下创建多个实例，至于那些非常规的手段，并不值得牺牲代码可读性和性能去进行防御。  
+
+最后再抛出一个问题，Spring的@Scope("singleton")是怎么实现单例的呢？  
 
 最最重要的是，圣诞节来了，你知道怎么实现单例、防止多例了么？
 
