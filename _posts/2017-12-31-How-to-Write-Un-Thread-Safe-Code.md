@@ -54,9 +54,13 @@ public class UnsafeCountingServlet extends GenericServlet implements Servlet {
 这一次，我们需要写一个单例，单例很简单呀，不就是构造函数私有化么：
 ```java
 public class UnsafeSingleton {
-    private UnsafeSingleton instance = null;
+    private static UnsafeSingleton instance = null;
 
-    public UnsafeSingleton getInstance() {
+    private UnsafeSingleton() {
+
+    }
+
+    public static UnsafeSingleton getInstance() {
         if (instance == null)
             instance = new UnsafeSingleton();
         return instance;
