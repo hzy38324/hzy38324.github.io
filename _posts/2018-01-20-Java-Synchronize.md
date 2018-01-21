@@ -17,7 +17,7 @@ tags:                               #标签
 > Java语言的关键字，当它用来修饰一个方法或者一个代码块的时候，能够保证在同一时刻最多只有一个线程执行该段代码。  
 
 这个解释很好，它**非常直观**的告诉我们使用synchronize会带来什么效果。  
-然而，也正因为如此，这个解释太过停留在了**表面**，就像我在给一款洗衣机做广告，我说这款自动式洗衣机可以一键洗衣一样，如果我只是这样说，那根本无法展示我这台洗衣机有什么与众不同的地方，因为市面上可以一键式操作的洗衣机太多了，我必须向客户抛出问题，我们这款洗衣机是如何一键式完成整个洗衣流程的、为什么我们的洗衣机洗的比别人干净，然后贴上各种高科技高逼格的图片、播放各种酷炫的动画视频，这样，客户才了解了我这款洗衣机的**内涵**，才有可能对这款洗衣机动心。  
+然而，也正因为如此，这个解释太过停留在了**表面**，就像给一款洗衣机做广告，广告中说这款自动式洗衣机可以一键洗衣一样，如果只是这样说，那根本无法展示这台洗衣机有什么与众不同的地方，因为市面上可以一键式操作的洗衣机太多了，必须向客户抛出问题，这款洗衣机是如何一键式完成整个洗衣流程的、为什么这款洗衣机洗的比别人干净，然后贴上各种高科技高逼格的图片、播放各种酷炫的动画视频，这样，客户才了解了这款洗衣机的**内涵**，才有可能对这款洗衣机动心。  
 
 回到synchronize，开头的解释告诉我们，synchronize可以“保证在同一时刻最多只有一个线程执行该段代码”，那么，我们就不得不去想： 
 
@@ -31,7 +31,7 @@ tags:                               #标签
 # 基本用法
 首先还是要刷一把代码，我会用一个简单的例子演示如何使用synchronize，并对其进行测试。如果你已经了解了synchronize的用法，可以快速略读这一小节。  
 
-假设我们要给一个处理器加入计数器，每次调用时给计数器加一，为方便扩展，我们定义了如下接口（**本文的所有代码，可到[Github](https://github.com/hzy38324/Coding-Pratice)下载**）：  
+假设我们要给一个处理器加入计数器，每次调用时给计数器加一，为方便扩展，我们定义了如下接口（**本文的示例代码，可到[Github](https://github.com/hzy38324/Coding-Pratice)下载**）：  
 CountingProcessor:  
 ```java
 public interface CountingProcessor {
@@ -176,11 +176,11 @@ SynchronizeProcessTest:
 # 内置锁
 关于synchronize，我们经常使用的隐喻就是锁，首先进入的线程，拿到了锁的唯一一把钥匙，至于其他线程，就只能阻塞（Blocked）；等到线程走出synchronize之后，会把锁释放掉，也就是把钥匙扔出去，下一个拿到钥匙的线程，就可以结束阻塞状态，继续运行。  
 但是锁从哪来呢？随随便便抓起一个东西就可以作为锁么？  
-还真是这样，Java中每一个对象都有一个与之关联的锁，称为内置锁：  
+还真是这样，**Java中每一个对象都有一个与之关联的锁**，称为**内置锁**：  
 > Every object has an intrinsic lock associated with it. —— [The Java™ Tutorials](https://docs.oracle.com/javase/tutorial/essential/concurrency/locksync.html)
 
-当我们使用synchronize修饰非静态方法时，用的是调用该方法的实例的内置锁，也就是this;  
-当我们使用synchronize修饰静态方法时，用的是调用该方法的所在的类对象的内置锁;  
+当我们使用synchronize修饰非静态方法时，用的是调用该方法的实例的内置锁，也就是**this**;  
+当我们使用synchronize修饰静态方法时，用的是调用该方法的所在的**类对象**的内置锁;  
 更多时候，我们使用的是synchronize代码块，我们经常用的是synchronize(this)，也就是把对象实例作为锁。  
 
 同一时间进入同一个锁的线程只有一个，如果我们希望有多个线程可以同时进入多个加了锁的方法，那只靠一个this锁肯定是不够的，那怎么办？一点都不担心，还记得上面说的吗，Java中每个对象都是锁，想用的时候new一个Object就好了：  
@@ -235,12 +235,13 @@ public class LoggingWidget extends Widget {
 	}
 }
 ```
+分析：  
 前面提到，synchronized修饰非静态方法时，用的是调用该方法的对象实例作为锁，所以上面的代码中，调用LoggingWidget的doSomething时，拿到了实例的锁的钥匙，接着再去调用父类的doSomething方法，父类的方法同样被synchronized修饰，此时钥匙已经被拿走了而且还没释放，所以阻塞，而阻塞导致LoggingWidget的doSomething方法无法执行完成，因而锁一直不会被释放，所以，死锁了？？？  
 
-当然不是，上面的理解错在了弄错了**锁的持有者**，**锁的持有者是“线程”，而不是“调用”**，线程在进入LoggingWidget的doSomething方法时，已经拿到this对象内置锁的钥匙了，下次再碰到同一把锁，自然是用同一把钥匙去打开它就可以了。这就是内置锁的可重入性（Reentrancy）。  
+**当然不是**，上面的理解错在了弄错了**锁的持有者**，**锁的持有者是“线程”，而不是“调用”**，线程在进入LoggingWidget的doSomething方法时，已经拿到this对象内置锁的钥匙了，下次再碰到同一把锁，自然是用同一把钥匙去打开它就可以了。这就是内置锁的**可重入性**（Reentrancy）。  
   
-既然锁是可重入的，那么也就意味着，JVM不能简单的在线程执行完synchronized方法或者synchronized代码块时就释放锁，因为线程可能同时“重入”了很多道锁，事实上，JVM是借助锁上的计数器来判断是否可以释放锁的：
-> Reentrancy  is  implemented  by associating with each lock an acquisition count and an owning thread. When the count is zero, the lock is considered unheld. When a thread acquires a previously unheld lock, the JVM records the owner and sets the acquisition count to one.  If  that  same  thread  acquires  the  lock  again,  the  count  is  incremented,  and  when  the  owning  thread  exits  the synchronized block, the count is decremented. When the count reaches zero, the lock is released. —— 《Java并发编程实践》
+既然锁是可重入的，那么也就意味着，JVM不能简单的在线程执行完synchronized方法或者synchronized代码块时就释放锁，因为线程可能同时“重入”了很多道锁，事实上，JVM是借助锁上的**计数器**来判断是否可以释放锁的：
+> Reentrancy  is  implemented  by associating with each lock an acquisition **count** and an owning thread. When the count is zero, the lock is considered unheld. When a thread acquires a previously unheld lock, the JVM records the owner and sets the acquisition count to one.  If  that  same  thread  acquires  the  lock  again,  the  count  is  incremented,  and  when  the  owning  thread  exits  the synchronized block, the count is decremented. When the count reaches zero, the lock is released. —— 《Java并发编程实践》
 
 如果将含有synchronized代码块的代码编译出来的class文件，使用javap进行反汇编，你可以看到会有两条指令：
 monitorenter和monitorexit，这两条指令做的也就是上面说的那些事，有兴趣的同学可以研究一下。  
@@ -254,10 +255,10 @@ monitorenter和monitorexit，这两条指令做的也就是上面说的那些事
 1. 所有的加锁行为，都可以带来两个保障——**原子性**和**可见性**。其中，原子性是相对锁所在的线程的角度而言，而可见性则是相对其他线程而言。
 2. **锁的持有者是“线程”**，而不是“调用”，这也是锁的为什么是**可重入**的原因。
 
-如何向一个新手介绍synchronized的表象：
+如何向一个新手介绍synchronized的表象？  
 > Java语言的关键字，当它用来修饰一个方法或者一个代码块的时候，能够保证在同一时刻最多只有一个线程执行该段代码。 
 
-如何在一个老司机面前装逼格：
+如何在一个老司机面前装逼格？  
 > Java中的synchronize，通过使用**内置锁**，来实现对变量的同步操作，进而实现了对变量操作的**原子性**和其他线程对变量的**可见性**，从而确保了并发情况下的线程安全。
 
 # 后记
