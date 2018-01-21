@@ -242,6 +242,9 @@ public class LoggingWidget extends Widget {
 既然锁是可重入的，那么也就意味着，JVM不能简单的在线程执行完synchronized方法或者synchronized代码块时就释放锁，因为线程可能同时“重入”了很多道锁，事实上，JVM是借助锁上的计数器来判断是否可以释放锁的：
 > Reentrancy  is  implemented  by associating with each lock an acquisition count and an owning thread. When the count is zero, the lock is considered unheld. When a thread acquires a previously unheld lock, the JVM records the owner and sets the acquisition count to one.  If  that  same  thread  acquires  the  lock  again,  the  count  is  incremented,  and  when  the  owning  thread  exits  the synchronized block, the count is decremented. When the count reaches zero, the lock is released. —— 《Java并发编程实践》
 
+如果将含有synchronized代码块的代码编译出来的class文件，使用javap进行反汇编，你可以看到会有两条指令：
+monitorenter和monitorexit，这两条指令做的也就是上面说的那些事，有兴趣的同学可以研究一下。  
+
 # 总结
 这篇文章主要对Java中的synchronized做了一些研究，总结一下：  
 
