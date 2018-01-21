@@ -8,7 +8,8 @@ header-img: img/banner/how-to-write-un-thread-safe-code.jpg    #这篇文章标�
 catalog: true                       # 是否归档
 tags:                               #标签
     - Java
-    - 并发编程
+    - Concurrency
+
 ---
 # 什么是线程安全性
 很多时候，我们的代码，在单线程的环境下是可以运行的非常完美，然而，一旦把代码放到多线程的环境下去接受蹂躏，结果常常是惨不忍睹的。  
