@@ -1,6 +1,6 @@
 ---
 layout:     post                    # 使用的布局（不需要改）
-title:      Java并发趣谈——如何构建一个高效且可伸缩的缓存               # 标题 
+title:      Java趣谈——如何构建一个高效且可伸缩的缓存               # 标题 
 subtitle:    #副标题
 date:       2018-02-25              # 时间
 author:     ZY                      # 作者
@@ -197,12 +197,13 @@ public class Memoizer <A, V> implements Computable<A, V> {
 这里之所以用putIfAbsent而不用put，原因很简单。  
 如果有两个都是计算userID=1的线程，同时调用put方法，那么返回的结果都不会为null，后面还是会创建两个任务去计算相同的值。  
 而putIfAbsent，当map里面已经有对应的值了，则会返回已有的值，否则，会返回null，这样就可以解决相同的值计算两次的问题。  
-2、**为什么要while (true) {}**  
+2、**为什么要while (true) **  
 这是因为future的get方法会由于线程被**中断**而抛出CancellationException。  
 我们对于CancellationException的处理是cache.remove(arg, f);，也就是把缓存清理掉，然后进入下一个循环，重新计算，直到计算成功，或者抛出ExecutionException。  
 
 # 总结
 这篇文章中，我们先是用装饰模式，改良了代码的设计，接着通过使用并发容器ConcurrentHashMap以及同步工具Future，取代了原先的synchronize，实现了线程安全性的委托。  
+
 《Java并发编程实践》中，将委托称为**实现线程安全的一个最有效策略**。委托其实就是把原来通过使用synchronize和volatile来实现的线程安全，委托给Java提供的一些基础构建模块（当然你也可以写自己的基础构建模块）去实现，这些基础构建模块包括：
 - **同步容器**：比如Vector，同步容器的原理大多就是synchronize，所以用的不多；
 - **并发容器**：比如本文用到的ConcurrentHashMap，当然还有CopyonWriteArrayList、LinkedBlockingQueue等，根据你的需求使用不同数据结构的并发容器；
@@ -213,11 +214,13 @@ public class Memoizer <A, V> implements Computable<A, V> {
 - [如何用一句话介绍synchronize的内涵](http://bridgeforyou.cn/2018/01/20/Java-Synchronize/)
 - [Volatile趣谈——我是怎么把贝克汉姆的进球弄丢的](http://bridgeforyou.cn/2018/02/10/Funny-Volatile/)
 
-其实也就是《Java并发编程实践》第一部分的迷你版，总结成一句话就是：  
-要想写出线程安全的代码，我们需要用到使用synchronize、volatile，或者将线程安全委托给基础构建模块。  
+其实这也就是《Java并发编程实践》第一部分的迷你版，总结成一句话就是：  
+**要想写出线程安全的代码，我们需要用到使用synchronize、volatile，或者将线程安全委托给基础构建模块。**  
+
 当然，在实际应用中，只有这些基础知识是不够的，最简单的例子，你不可能每次请求过来都创建线程，这会吃光内存的。所以，你需要一个**线程池**，来限制线程的数量，这也就引出了《Java并发编程实践》的第二部分，结构化并发应用程序（Structuring Concurrent Applications），听名字确实不知道想讲什么，所以我也将把它啃下来，然后像第一部分一样，用尽可能通俗易懂的语言和大家分享学习心得。
 
 # 参考
 - 《Java并发编程实践》
 - [Future (Java Platform SE 7 )](https://docs.oracle.com/javase/7/docs/api/java/util/concurrent/Future.html)
+
 
