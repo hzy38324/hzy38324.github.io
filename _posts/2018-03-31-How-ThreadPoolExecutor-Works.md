@@ -73,7 +73,7 @@ tags:                               #标签
 
 同样的，这两个参数也应该放在构造函数，由使用者根据实际情况，来决定要使用多大容量的线程池。  
 
-4、Keep-alive times  
+**4、Keep-alive times**  
 从厨房拿出来的桌子，在高峰期过后，就要渐渐撤回了吧？同样，当我发现线程池中线程的数量超过corePoolSize，就会去监控线程，发现某条线程很久没有工作了，就把它关掉，这里的很久是多久，那就要看你传过来的keepAliveTime是多少了。  
 如果你想对corePoolSize线程也做这种监控，只需要调用threadPoolExecutor.allowCoreThreadTimeOut(true)就可以了。   
 
@@ -142,7 +142,7 @@ DiscardPolicy：
 # 给你们造好的轮子
 为了方便你们使用，我已经在Executors里面写了几个线程池的**工厂方法**，这样，**很多新手就不需要了解太多关于ThreadPoolExecutor的知识了，他们只需要直接使用我的工厂方法，就可以使用线程池**：  
 
-1、newFixedThreadPool  
+**1、newFixedThreadPool**  
 如果你想对线程池里的线程总数做一个限制，那么通过Executors.newFixedThreadPool(...)获取一个固定线程数的线程池，是一个很不错的选择，它将返回一个corePoolSize和maximumPoolSize相等的线程池，  
 Executors newFixedThreadPool：  
 ```java
@@ -153,7 +153,7 @@ Executors newFixedThreadPool：
     }
 ```
 
-2、newCachedThreadPool  
+**2、newCachedThreadPool**  
 如果你希望有一个**非常弹性**的线程池，那可以使用newCachedThreadPool：  
 ```java
     public static ExecutorService newCachedThreadPool() {
@@ -177,10 +177,10 @@ Executors newFixedThreadPool：
 
 当然，CachedThreadPool会有一个很明显的隐患，那就是线程数量不可控，当然，你已经弄懂了ThreadPoolExecutor几个重要参数，你完全可以自己定制一个有线程数量上限的CachedThreadPool，或者在创建完CachedThreadPool后，使用setMaximumPoolSize方法修改最大线程数量。  
 
-3、newSingleThreadExecutor  
+**3、newSingleThreadExecutor**  
 触类旁通，很容易理解，这里就不贴源码和解释了。  
 
-4、 newScheduledThreadPool  
+**4、 newScheduledThreadPool**  
 触类旁通，理解起来有些许难度，这里就不贴源码和解释了。
 
 # 总结
@@ -188,9 +188,9 @@ Executors newFixedThreadPool：
 
 # 后记
 时钟来到了24点，我跑完了所有ThreadPoolExecutor的测试用例，绿条，全部通过。  
-正准备提交代码，回家睡觉，突然发现还没给这个类写上自己的大名，于是，啪啪啪，我在类的头上，留下了我的名字。  
+正准备提交代码，回家睡觉，突然发现还没给这个类写上自己的大名，于是，啪啪啪，我在类的头上，留下了我的名字......    
 
-![致敬Doug-Lea大神](/img/post/2018-03-31-How-ThreadPoolExecutor-Works/Doug-Lea.png)
+![致敬Doug-Lea大神！](/img/post/2018-03-31-How-ThreadPoolExecutor-Works/Doug-Lea.png)
 
 
 # 参考
