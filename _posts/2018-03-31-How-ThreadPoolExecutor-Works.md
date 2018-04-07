@@ -190,7 +190,7 @@ Executors newFixedThreadPool：
 时钟来到了24点，我跑完了所有ThreadPoolExecutor的测试用例，绿条，全部通过。  
 正准备提交代码，回家睡觉，突然发现还没给这个类写上自己的大名，于是，啪啪啪，我在类的头上，留下了我的名字......    
 
-![致敬Doug-Lea大神！](/img/post/2018-03-31-How-ThreadPoolExecutor-Works/Doug-Lea.png)
+![致敬Doug Lea大神！](/img/post/2018-03-31-How-ThreadPoolExecutor-Works/Doug-Lea.png)
 
 
 # 参考
