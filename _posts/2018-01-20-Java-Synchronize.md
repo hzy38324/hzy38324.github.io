@@ -81,7 +81,7 @@ public class SynchronizeProcessTest {
         while(thread1.isAlive() || thread2.isAlive()) {}
     }
 }
-```  
+```
 其中的ProcessTask如下所示：  
 ```java
 public class ProcessTask implements Runnable {
@@ -151,7 +151,7 @@ SynchronizeProcessTest:
     }
 
 	...
-```  
+```
 执行用例：  
 ![](/img/post/2018-01-20-Java-Synchronize/success-test1.png)  
 ![](/img/post/2018-01-20-Java-Synchronize/success-test2.png)  
@@ -165,7 +165,7 @@ SynchronizeProcessTest:
 # 可见性
 上面我们提到了synchronize的第一个作用，确保原子性，这其实是从**使用synchronize的线程**的角度来讲的，而如果我们从**其他线程**的角度来看，那么synchronize则是实现了**可见性**。  
 可见性的意思是变量的修改可以被其他线程观察到，在上面计数器的例子中，由于一次只有一个线程可以执行count++，抢不到锁的线程，必须等抢到锁的线程更新完count之后，才可以去执行count++，而这个时候，count也已经完成了更新，新的锁持有者，可以看到更新后的count，而不至于拿着旧的count值去进行计算，这就是可见性。 
- 
+
 提起可见性，我们就不得不提到volatile关键字，volatile实现了比synchronize更轻量级的同步机制，或者说，加锁机制既确保了可见性，有确保了原子性，而volatile只能保证可见性。  
 > Locking can guarantee both visibility and atomicity; volatile variables can only guarantee visibility. —— 《Java并发编程实践》
 
@@ -239,7 +239,7 @@ public class LoggingWidget extends Widget {
 前面提到，synchronized修饰非静态方法时，用的是调用该方法的对象实例作为锁，所以上面的代码中，调用LoggingWidget的doSomething时，拿到了实例的锁的钥匙，接着再去调用父类的doSomething方法，父类的方法同样被synchronized修饰，此时钥匙已经被拿走了而且还没释放，所以阻塞，而阻塞导致LoggingWidget的doSomething方法无法执行完成，因而锁一直不会被释放，所以，死锁了？？？  
 
 **当然不是**，上面的理解错在了弄错了**锁的持有者**，**锁的持有者是“线程”，而不是“调用”**，线程在进入LoggingWidget的doSomething方法时，已经拿到this对象内置锁的钥匙了，下次再碰到同一把锁，自然是用同一把钥匙去打开它就可以了。这就是内置锁的**可重入性**（Reentrancy）。  
-  
+
 既然锁是可重入的，那么也就意味着，JVM不能简单的在线程执行完synchronized方法或者synchronized代码块时就释放锁，因为线程可能同时“重入”了很多道锁，事实上，JVM是借助锁上的**计数器**来判断是否可以释放锁的：
 > Reentrancy  is  implemented  by associating with each lock an acquisition **count** and an owning thread. When the count is zero, the lock is considered unheld. When a thread acquires a previously unheld lock, the JVM records the owner and sets the acquisition count to one.  If  that  same  thread  acquires  the  lock  again,  the  count  is  incremented,  and  when  the  owning  thread  exits  the synchronized block, the count is decremented. When the count reaches zero, the lock is released. —— 《Java并发编程实践》
 
@@ -250,10 +250,10 @@ monitorenter和monitorexit，这两条指令做的也就是上面说的那些事
 这篇文章主要对Java中的synchronized做了一些研究，总结一下：  
 
 1. Java中每个对象都有一个**内置锁**。
-1. 与内置锁相对的是**显示锁**，使用显示锁需要手动创建Lock对象，而内置锁则是所有对象自带的。
-1. synchronized使用对象自带的内置锁来进行加锁，从而保证在同一时刻最多只有一个线程执行代码。
-1. 所有的加锁行为，都可以带来两个保障——**原子性**和**可见性**。其中，原子性是相对锁所在的线程的角度而言，而可见性则是相对其他线程而言。
-2. **锁的持有者是“线程”**，而不是“调用”，这也是锁的为什么是**可重入**的原因。
+2. 与内置锁相对的是**显示锁**，使用显示锁需要手动创建Lock对象，而内置锁则是所有对象自带的。
+3. synchronized使用对象自带的内置锁来进行加锁，从而保证在同一时刻最多只有一个线程执行代码。
+4. 所有的加锁行为，都可以带来两个保障——**原子性**和**可见性**。其中，原子性是相对锁所在的线程的角度而言，而可见性则是相对其他线程而言。
+5. **锁的持有者是“线程”**，而不是“调用”，这也是锁的为什么是**可重入**的原因。
 
 如何向一个新手介绍synchronized的表象？  
 > Java语言的关键字，当它用来修饰一个方法或者一个代码块的时候，能够保证在同一时刻最多只有一个线程执行该段代码。 
