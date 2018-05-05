@@ -11,7 +11,8 @@ tags:                               #标签
     - RPC
     - 分布式 
 ---
-在[上一篇](http://bridgeforyou.cn/2018/05/02/How-to-Explain-RPC-to-My-Wife/)文章中，我们对RPC做了一个理论性的介绍。这一篇文章，我将演示如何用代码来实现一个简单的RPC。  
+在[如何给老婆解释什么是RPC](http://bridgeforyou.cn/2018/05/02/How-to-Explain-RPC-to-My-Wife/)中，我们讨论了RPC的实现思路。  
+那么这一次，就让我们通过代码来实现一个简单的RPC吧！  
 
 # RPC的实现原理
 正如上一讲所说，RPC主要是为了解决的两个问题：
@@ -28,16 +29,16 @@ tags:                               #标签
 那么如何实现远程过程调用，也就是RPC呢，一个完整的RPC流程，可以用下面这张图来描述：  
 ![rpc architecture](/img/post/2018-05-02-How-to-Explain-RPC-to-My-Wife/rpc-architecture.png)
 
-其中左边的Client，对应的就是前面的Service A，而Server，对应的则是Service B。  
+其中左边的Client，对应的就是前面的Service A，而右边的Server，对应的则是Service B。  
 下面一步一步详细解释一下。  
 
-1. Service A的应用层代码中，调用了Calculator的一个实现类；
-2. 这个Calculator实现类，内部并不是直接实现计算器的加减运算逻辑，而是通过远程调用Service B的RPC接口，来获取运算结果，因此称之为Stub；
-3. Stub怎么和Service B建立远程通讯呢？这时候就要用到远程通讯工具了，也就是图中的Run-time Library，这个工具将帮你实现远程通讯的功能，比如Java的Socket，就是这样一个库，当然，你也可以用基于Http协议的HttpClient，或者其他通讯工具类，都可以，RPC并没有规定说你要用何种协议进行通讯；
-4. Stub通过调用通讯工具提供的方法，和Service B建立起了通讯，然后将请求数据发给Service B。需要注意的是，由于底层的网络通讯是基于二进制格式的，因此这里Stub传给通讯工具类的数据也必须是二进制，比如calculator.add(1,2)，你必须把参数值1和2放到一个Request对象里头（这个Request对象当然不只这些信息，还包括要调用哪个服务的哪个RPC接口等其他信息），然后序列化为二进制，再传给通讯工具类，这一点在下面的代码实现中会体现；
+1. Service A的应用层代码中，调用了Calculator的一个实现类的add方法，希望执行一个加法运算；
+2. 这个Calculator实现类，内部并不是直接实现计算器的加减乘除逻辑，而是通过远程调用Service B的RPC接口，来获取运算结果，因此称之为**Stub**；
+3. Stub怎么和Service B建立远程通讯呢？这时候就要用到**远程通讯工具**了，也就是图中的**Run-time Library**，这个工具将帮你实现远程通讯的功能，比如Java的**Socket**，就是这样一个库，当然，你也可以用基于Http协议的**HttpClient**，或者其他通讯工具类，都可以，**RPC并没有规定说你要用何种协议进行通讯**；
+4. Stub通过调用通讯工具提供的方法，和Service B建立起了通讯，然后将请求数据发给Service B。需要注意的是，由于底层的网络通讯是基于**二进制格式**的，因此这里Stub传给通讯工具类的数据也必须是二进制，比如calculator.add(1,2)，你必须把参数值1和2放到一个Request对象里头（这个Request对象当然不只这些信息，还包括要调用哪个服务的哪个RPC接口等其他信息），然后**序列化**为二进制，再传给通讯工具类，这一点也将在下面的代码实现中体现；
 5. 二进制的数据传到Service B这一边了，Service B当然也有自己的通讯工具，通过这个通讯工具接收二进制的请求；
-6. 既然数据是二进制的，那么自然要进行反序列化了，将二进制的数据反序列化为请求对象，然后将这个请求对象交给Service B的Stub处理；
-7. 和之前的Service A的Stub一样，这里的Stub也同样是个“假玩意”，它所负责的，只是去解析请求对象，知道调用方要调的是哪个RPC接口，传进来的参数又是什么，然后再把这些参数传给对应的RPC接口，也就是Calculator的实际实现类，去执行。很明显，如果是Java，那这里肯定用到了反射。
+6. 既然数据是二进制的，那么自然要进行**反序列化**了，将二进制的数据反序列化为请求对象，然后将这个请求对象交给Service B的Stub处理；
+7. 和之前的Service A的Stub一样，这里的Stub也同样是个“假玩意”，它所负责的，只是去解析请求对象，知道调用方要调的是哪个RPC接口，传进来的参数又是什么，然后再把这些参数传给对应的RPC接口，也就是Calculator的实际实现类去执行。很明显，如果是Java，那这里肯定用到了**反射**。
 8. RPC接口执行完毕，返回执行结果，现在轮到Service B要把数据发给Service A了，怎么发？一样的道理，一样的流程，只是现在Service B变成了Client，Service A变成了Server而已：Service B反序列化执行结果->传输给Service A->Service A反序列化执行结果 -> 将结果返回给Application，完毕。
 
 理论的讲完了，是时候把理论变成实践了。  
@@ -55,7 +56,7 @@ public class ComsumerApp {
     }
 }
 ```
-通过一个CalculatorRemoteImpl，我们把RPC的逻辑封装进去了，客户端调用时感知不到远程调用的麻烦。下面再来看看CalculatorRemoteImpl，代码有些多，但是其实就是把上面的2、3、4几个步骤用代码实现了而已，CalculatorRemoteImpl：  
+**通过一个CalculatorRemoteImpl，我们把RPC的逻辑封装进去了，客户端调用时感知不到远程调用的麻烦**。下面再来看看CalculatorRemoteImpl，代码有些多，但是其实就是把上面的2、3、4几个步骤用代码实现了而已，CalculatorRemoteImpl：  
 ```java
 public class CalculatorRemoteImpl implements Calculator {
     public int add(int a, int b) {
@@ -90,13 +91,13 @@ public class CalculatorRemoteImpl implements Calculator {
 ```
 add方法的前面两行，lookupProviders和chooseTarget，可能大家会觉得不明觉厉。  
 
-分布式应用下，一个服务可能有多个实例，比如Service B，可能有ip地址为198.168.1.11和198.168.1.13两个实例，lookupProviders，其实就是在寻找要调用的服务的实例列表。在分布式应用下，通过会有一个服务注册中心，来提高查询实例列表的功能。  
+分布式应用下，一个服务可能有多个实例，比如Service B，可能有ip地址为198.168.1.11和198.168.1.13两个实例，lookupProviders，其实就是在寻找要调用的服务的实例列表。在分布式应用下，通常会有一个**服务注册中心**，来提供查询实例列表的功能。  
 
-查到实例列表之后要调用哪一个实例呢，只时候就需要chooseTarget了，其实内部就是一个负载均衡策略。  
+查到实例列表之后要调用哪一个实例呢，只时候就需要chooseTarget了，其实内部就是一个**负载均衡**策略。  
 
 由于我们这里只是想实现一个简单的RPC，所以暂时不考虑服务注册中心和负载均衡，因此代码里写死了返回ip地址为127.0.0.1。  
 
-代码往下走，我们这里用到了Socket来进行远程通讯，同时利用ObjectOutputStream的writeObject和ObjectInputStream的readObject，来实现序列化和反序列化。  
+代码继续往下走，我们这里用到了Socket来进行远程通讯，同时利用**ObjectOutputStream**的writeObject和**ObjectInputStream**的readObject，来实现序列化和反序列化。  
 
 最后再来看看Server端的实现，和Client端非常类似，ProviderApp：  
 ```java
@@ -148,12 +149,12 @@ public class ProviderApp {
 ```
 Server端主要是通过ServerSocket的accept方法，来接收Client端的请求，接着就是反序列化请求->执行->序列化执行结果，最后将二进制格式的执行结果返回给Client。  
 
-就这样我们实现了一个简陋而又详细的RPC。  
+**就这样我们实现了一个简陋而又详细的RPC。**  
 说它简陋，是因为这个实现确实比较挫，在下一小节会说它为什么挫。  
-说它详细，是因为它一步一步的演示了一个RPC的执行流程，让大家弄懂了RPC的内部机制。  
+说它详细，是因为它一步一步的演示了一个RPC的执行流程，方便大家了解RPC的内部机制。  
 
 # 为什么说这个RPC实现很挫
-这个RPC实现只是为了给大家演示一下RPC的原理，要是想放到生产环境去用，那是决定不行的。  
+这个RPC实现只是为了给大家演示一下RPC的原理，要是想放到生产环境去用，那是绝对不行的。  
 
 1、缺乏通用性  
 我通过给Calculator接口写了一个CalculatorRemoteImpl，来实现计算器的远程调用，下一次要是有别的接口需要远程调用，是不是又得再写对应的远程调用实现类？这肯定是很不方便的。  
@@ -172,7 +173,7 @@ calculator.add(1,2);
 ```
 Dubbo通过和Spring的集成，在Spring容器初始化的时候，如果扫描到对象加了@Reference注解，那么就给这个对象生成一个代理对象，这个代理对象会负责远程通讯，然后将代理对象放进容器中。所以代码运行期用到的calculator就是那个代理对象了。  
 
-我们可以先不和Spring集成，也就是先不采用依赖注入，但是我们要做到像Dubbo一样，无需自己手动写代理对象，怎么做呢？那自然是要求所有的远程调用都遵循一套模板，把远程调用的信息放到一个RpcRequest对象里面，发给Server端，Server端解析之后就知道你要调用的是哪个RPC接口、以及入参是什么类型、入参的值又是什么，就像Dubbo的RpcInvocation：  
+我们可以先不和Spring集成，也就是先不采用依赖注入，但是我们要做到像Dubbo一样，无需自己手动写代理对象，怎么做呢？那自然是要求所有的远程调用都遵循一套模板，**把远程调用的信息放到一个RpcRequest对象里面，发给Server端，Server端解析之后就知道你要调用的是哪个RPC接口、以及入参是什么类型、入参的值又是什么**，就像Dubbo的RpcInvocation：  
 ```java
 public class RpcInvocation implements Invocation, Serializable {
 
@@ -221,6 +222,8 @@ public class RpcInvocation implements Invocation, Serializable {
 诸如此类的优化点还有很多，这也是为什么实现一个高性能高可用的RPC框架那么难的原因。  
 
 当然，我们现在已经有很多很不错的RPC框架可以参考了，我们完全可以借鉴一下前人的智慧。  
+
+**后面如果有（dian）机（zan）会（duo）的话**，也将和大家分享一下如何一步一步优化现有的这块RPC代码，把它做成一个小型RPC框架！
 
 # 参考
 
