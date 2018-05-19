@@ -37,10 +37,10 @@ tags:                               #标签
 
 假设你有一个计算器接口，Calculator，以及它的实现类CalculatorImpl，那么在系统还是**单体应用**时，你要调用Calculator的add方法来执行一个加运算，直接new一个CalculatorImpl，然后调用add方法就行了，这其实就是非常普通的**本地函数调用**，因为在**同一个地址空间**，或者说在同一块内存，所以通过方法栈和参数栈就可以实现。  
 
-![rpc architecture](/img/post/2018-05-02-How-to-Explain-RPC-to-My-Wife/local-call.png)
+![](/img/post/2018-05-02-How-to-Explain-RPC-to-My-Wife/local-call.png)
 
 现在，基于高性能和高可靠等因素的考虑，你决定将系统改造为分布式应用，将很多可以共享的功能都单独拎出来，比如上面说到的计算器，你单独把它放到一个服务里头，让别的服务去调用它。  
-![rpc architecture](/img/post/2018-05-02-How-to-Explain-RPC-to-My-Wife/remote-call.png)
+![](/img/post/2018-05-02-How-to-Explain-RPC-to-My-Wife/remote-call.png)
 
 这下问题来了，服务A里头并没有CalculatorImpl这个类，那它要怎样调用服务B的CalculatorImpl的add方法呢？  
 

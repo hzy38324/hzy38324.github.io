@@ -188,6 +188,8 @@ public class RpcInvocation implements Invocation, Serializable {
     private Map<String, String> attachments;
 
     private transient Invoker<?> invoker;
+    
+    ...
 ```
 
 2、集成Spring  
