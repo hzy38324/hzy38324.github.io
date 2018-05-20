@@ -58,7 +58,7 @@ Hash表的数据结构是怎样的呢？相信很多人都知道，这里简单�
 
 怎么解决？**rehash**。  
 
-关于rehash，这里就不细讲了，大家可以先了解一下Java HashMap的resize函数，然后再通过这篇文章：[A little internal on redis key value storage implementation](https://medium.com/@kousiknath/a-little-internal-on-redis-key-value-storage-implementation-fdf96bac7453) 去了解Redis的rehash算法，你会惊讶的发现Redis里头居然是两个HashTable。  
+关于rehash，这里就不细讲了，大家可以先了解一下Java HashMap的resize函数，然后再通过这篇文章：[A little internal on redis key value storage implementation](https://medium.com/@kousiknath/a-little-internal-on-redis-key-value-storage-implementation-fdf96bac7453) ，去了解Redis的rehash算法，你会惊讶的发现Redis里头居然是两个HashTable。  
 
 好，上面带大家从一个及其微观的角度窥视了Redis，下面几个小节，再带大家用宏观的视角去观察Redis。  
 
