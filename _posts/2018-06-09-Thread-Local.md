@@ -38,7 +38,7 @@ public class ThreadSafeSDFUsingSync {
 ```
 杨过就是这个线程不安全的SimpleDateFormat，一旦被多个线程同时操作（被多个高手同时进攻），就会出现异常（被打死），所以他选择了加锁，也就是synchronize，这样就不会有线程安全问题了。  
 
-> 为什么SimpleDateFormat是线程不安全的？这主要是因为它内部使用了一个全局的Calendar变量来存储date信息，详细解释可以参考文末的列出的文章。  
+> 为什么SimpleDateFormat是线程不安全的？这主要是因为，它内部使用了一个全局的Calendar变量，来存储date信息。详细解释可以参考文末列出的文章。  
 
 # 瞬间分身术
 “呵呵，可笑，谁说我们是英雄好汉了？”，李莫愁说道。  
