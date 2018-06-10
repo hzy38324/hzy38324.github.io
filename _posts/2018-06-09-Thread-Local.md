@@ -127,7 +127,7 @@ ThreadLocal的实现思路，正如我们上面ThreadSafeSDFUsingMap所演示的
 set方法会先获取到当前线程，然后获取当前线程对象中，一个ThreadLocalMap类型的map，然后把自己，也就是threadLocal作为key，把要存储的值作为value，塞入这个map。  
 
 **这张图很好的描述了Thread、ThreadLocal、ThreadLocalMap三者的关系：**  
-![图片来源：LinkedIn.com](/img/post/2018-06-09-Thread-Local/threadlocal-internal.png) 
+![](/img/post/2018-06-09-Thread-Local/threadlocal-internal.png) 
 
 为什么JDK要把数据放在Thread对象？而不直接放到ThreadLocal？为什么key值不是线程ID，而是ThreadLocal？思考题。后面再讨论。  
 
