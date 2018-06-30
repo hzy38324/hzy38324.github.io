@@ -10,34 +10,34 @@ tags:                               #标签
     - Spring
     - Java
 ---
-组内每周都会有技术分享，轮着来，人人有份。  
+组内每周都有技术分享，轮着来，人人有份。  
 
 刚来一个月不到，就轮到我了。  
 
-看了一个星期的Spring事务，于周五分享之，反响还不错。  
+看了一个星期的Spring事务，分享之，反响还不错。  
 
-遂将ppt改成文稿，和诸君分享。  
+遂将屁屁踢改成文稿，和诸君共食。  
 
 难度一般，老少咸宜。  
 
 # Spring事务的知识体系
 
-进入主题之前，先来了解一下Spring事务都有哪些内容：  
+进入主题之前，先来了解一下Spring事务，都有哪些内容：  
 ![](/img/post/2018-06-30-Spring-Transaction-Model/spring-tx-overview.png)
 
-Spring事务包含对分布式事务和单机事务的支持，我们用的比较多的是单机事务，也就是只操作一个数据库的事务。  
+Spring事务包含对**分布式事务**和**单机事务**的支持，我们用的比较多的是单机事务，也就是只操作一个数据库的事务。  
 
-单机事务，按照用法分，又可以分为编程式事务模型（TransactionTemplate）和声明式事务模型（@Transactional注解），后者可以理解为 aop + 编程式事务模型。  
+单机事务，按照用法分，又可以分为**编程式事务模型**（TransactionTemplate）和**声明式事务模型**（@Transactional注解），后者可以理解为 aop + 编程式事务模型。  
 
 编程式事务模型里面涉及到很多知识点，比如统一事务模型、事务传播级别、事务隔离级别等。  
 
-我们今天要讲的是其中一点，统一事务模型。  
+我们今天要讲的是其中一点，**统一事务模型**。  
 
 希望这次的分享能够让大家，对Spring事务有一个整体性的认识。  
 
 # 不仅仅是Template
 
-Spring的统一事务模型，解决的一个核心问题，就是不管你用的是什么数据访问方式，Hibernate、MyBatis抑或是JDBC，你的Service层的代码都是一样的，不需要做任何变动。  
+Spring的统一事务模型，解决的一个核心问题，就是不管你用的是什么数据访问方式，Hibernate、MyBatis抑或是JDBC，**你的Service层的代码都是一样的，不需要做任何变动。**  
 
 使用@Transactional注解的，相信大家都用过，而且由于注解的实现比较隐晦，不利于我们理解原理，这里就不演示。  
 
@@ -48,7 +48,7 @@ Spring的统一事务模型，解决的一个核心问题，就是不管你用�
 
 Spring是怎么做到的呢？  
 
-有人说，是模板模式。  
+有人说，是**模板模式**。  
 
 点开TransactionTemplate，的确是封装了事务操作的“套路”：
 ![](/img/post/2018-06-30-Spring-Transaction-Model/tx-template-inner.png)
@@ -60,16 +60,16 @@ Spring是怎么做到的呢？
 
 而TransactionTemplate，它已经是一个具体的类，无需实现任何方法，拿来即用。  
 
-但仔细看，就会发现里面有一个叫transactionManager的家伙，出镜率特别高，它帮TransactionTemplate做了很多事情。  
+但仔细看，就会发现里面有一个叫**transactionManager**的家伙，出镜率特别高，它帮TransactionTemplate做了很多事情。  
 
-点开一个，这家伙是个叫PlatformTransactionManager的接口：
+点开一看，这家伙是个叫PlatformTransactionManager的接口：
 ![](/img/post/2018-06-30-Spring-Transaction-Model/plat-f-tx-ma.png)
 
-恍然大悟，你只需给TransactionTemplate传一个PlatformTransactionManager的具体实现，也就是告诉TransactionTemplate，事务创建、提交、回滚的策略，它就可以按照自己的那套流程，完成事务的操作。  
+恍然大悟，你只需给TransactionTemplate传一个PlatformTransactionManager的具体实现，也就是告诉TransactionTemplate，事务创建、提交、回滚的具体策略，它就可以按照自己的那套流程，完成事务的操作。  
 
-这其实是策略模式，这其实是模板+策略的双剑合璧。  
+**TransactionTemplate，其实是模板+策略的双剑合璧。**  
 
-针对不同的厂商，只需要提供不同的PlatformTransactionManager实现即可。  
+****针对不同的厂商，只需要提供不同的PlatformTransactionManager实现即可。  
 
 比如对于MyBatis，就用DataSourceTxManager，对于Hibernate，就用HibernateTxManager：
 ![](/img/post/2018-06-30-Spring-Transaction-Model/diff-impl.png)
@@ -87,21 +87,21 @@ HibernateTxManager也是如此：
 
 # connection-pass
 
-了解完Spring是如何实现统一的事务模型，不知道你是否也有疑问，既然是事务，那就要保证事务里的所有dao操作，都要使用同一个数据库连接进行操作，但是我们在写代码的时候，并不需要给dao传入connection对象：  
+了解完Spring是如何实现统一的事务模型，不知道你是否也有疑问：既然是事务，那就要保证事务里的所有dao操作，都要使用同一个数据库连接进行操作，但是我们在写代码的时候，并不需要给dao传入connection对象：  
 ![](/img/post/2018-06-30-Spring-Transaction-Model/connection.png)
 
 Spring又是怎么做到的？  
 
-答案是ThreadLocal。  
+答案是**ThreadLocal**。  
 
-通过ThreadLocal，在同一个线程中共享connection。  
+**通过ThreadLocal，在同一个线程中共享connection。**  
 
-这很好理解，关键是，这是一个什么样的ThreadLocal？填空题。  
+这很好理解，**关键是，这是一个什么样的ThreadLocal？填空题。**  
 ![](/img/post/2018-06-30-Spring-Transaction-Model/thread-local.png) 
 
 也许你和我一开始想的一样，认为这里面放到就是connection对象。  
 
-直接放connection对象会有一个问题，那就是当你事务里面涉及到对多个数据库进行操作时，后面的操作取到的都是第一个数据库操作放进去的connection：  
+直接放connection对象会有一个问题，那就是当你事务里面，涉及到对多个数据库进行操作时，后面的操作取到的，就都是第一个数据库操作放进去的connection：  
 ![](/img/post/2018-06-30-Spring-Transaction-Model/db-1-2.png)
 
 如上图，假设deleteAll操作的是db1，那么它创建了针对db1的connection，然后放进ThreadLocal，然后save，本来是想操作db2的，结果它从threadLocal里拿到的，却是刚刚deleteAll时，放进去的操作db1的connection，卒。  
@@ -118,7 +118,7 @@ Spring是支持在事务里面新开一个事务的，最简单的方式就是�
 
 Spring又是如何实现新开事务的呢？  
 
-很简单，链表。  
+很简单，**链表。**  
 
 一开始，旧事务绑定在当前线程：  
 ![](/img/post/2018-06-30-Spring-Transaction-Model/t-b-1.png)
@@ -145,7 +145,7 @@ Spring又是如何实现新开事务的呢？
 
 # 总结
 
-这个星期看的Spring事务，不仅仅是解答了我对Spring事务的一些疑惑，还学到了一些挺巧妙的编程招式，比如模板模式竟然可以和策略模式一起使用。  
+这个星期看的Spring事务，不仅仅是解答了我对Spring事务的一些疑惑，还学到了一些挺巧妙的编程招式，譬如模板模式竟然可以和策略模式一起使用。  
 
 总结一下：  
 
