@@ -4,7 +4,7 @@ title:     Spring的统一事务模型              # 标题
 subtitle:   #副标题
 date:       2018-06-30              # 时间
 author:     ZY                      # 作者
-header-img: img/banner/how-to-write-a-effective-html-render.jpg    #这篇文章标题背景图片
+header-img: img/banner/spring-novel-3-annotaion-based-configuration-and-java-based-configuration.jpg    #这篇文章标题背景图片
 catalog: true                       # 是否归档
 tags:                               #标签
     - Spring
@@ -137,7 +137,7 @@ Spring又是如何实现新开事务的呢？
 
 之所以需要将新事务指向旧事务，形成一个事务链，是因为新事务在提交或者回滚之后，还需要恢复旧事务：
 ![](/img/post/2018-06-30-Spring-Transaction-Model/t-b-6.png)
-![](/img/post/2018-06-30-Spring-Transaction-Model/t-b-7)
+![](/img/post/2018-06-30-Spring-Transaction-Model/t-b-7.png)
 
 这一块逻辑对应的代码：  
 ![](/img/post/2018-06-30-Spring-Transaction-Model/bind-code.png)
