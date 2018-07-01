@@ -83,7 +83,7 @@ HibernateTxManager也是如此：
 ![](/img/post/2018-06-30-Spring-Transaction-Model/h-tx-m.png)
 
 我们在使用的时候，只需要通过Spring IOC，告诉Spring，要注入哪个TransactionManager，要使用哪种策略即可：  
-![](/img/post/2018-06-30-Spring-Transaction-Model/spring-config)
+![](/img/post/2018-06-30-Spring-Transaction-Model/spring-config.png)
 
 # connection-pass
 
