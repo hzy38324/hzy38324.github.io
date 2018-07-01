@@ -69,7 +69,7 @@ Spring是怎么做到的呢？
 
 **TransactionTemplate，其实是模板+策略的双剑合璧。**  
 
-****针对不同的厂商，只需要提供不同的PlatformTransactionManager实现即可。  
+针对不同的厂商，只需要提供不同的PlatformTransactionManager实现即可。  
 
 比如对于MyBatis，就用DataSourceTxManager，对于Hibernate，就用HibernateTxManager：
 ![](/img/post/2018-06-30-Spring-Transaction-Model/diff-impl.png)
