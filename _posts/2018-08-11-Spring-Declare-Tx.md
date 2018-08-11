@@ -4,7 +4,7 @@ title:    Spring的声明式事务模型              # 标题
 subtitle:   #副标题
 date:       2018-08-11              # 时间
 author:     ZY                      # 作者
-header-img: img/banner/redis-tutorial.jpg    #这篇文章标题背景图片
+header-img: img/banner/wallpaper2you_248394.jpg    #这篇文章标题背景图片
 catalog: true                       # 是否归档
 tags:                               #标签
     - Spring
@@ -15,15 +15,17 @@ tags:                               #标签
 
 上次分享了[Spring的统一事务模型](https://zhuanlan.zhihu.com/p/38772486)，这次聊聊Spring的声明式事务模型。  
 
-和上次一样，周五分享完，周末把keynote整理成文稿，和诸君共食。  
+和上次一样，把屁屁踢整理成文稿，和诸君共食。  
 
 难度一般，老少咸宜。  
 
-> 关注微信公众号Bridge4You，回复Spring事务，即可获取这两次分享的keynote或者ppt。
+> 关注微信公众号Bridge4You，回复Spring事务，即可获取这两次分享的keynote和ppt。
 
 # 什么是Spring的声明式事务
 
-声明式事务，其实就是我们常用的@Transactional注解，加了个注解，马上就有了事务，非常神奇，比我们之前用TransactionTemplate那种编程式事务，方便太多：  
+声明式事务，其实就是我们常用的@Transactional注解。  
+
+加了个注解，马上就有了事务，非常神奇。比我们之前用TransactionTemplate那种编程式事务，方便太多：  
 ![](/img/post/2018-08-11-Spring-Declare-Tx/1.png)
 
 # 声明式事务是怎么实现的
@@ -34,9 +36,10 @@ tags:                               #标签
 
 你加了个注解，Spring就会生成一个代理对象，这个代理对象就会有事务的逻辑。  
 
-简单回顾下aop的原理。  
+简单回顾下aop的原理：  
 
-首先，在Spring Bean初始化的过程中，有一个叫applyBeanPostProcessorsAfterInitialization的阶段，会获取BeanPostProcessor（下文简称BPP）列表，然后逐个执行BPP的postProcessAfterInitialization方法。而当你开启了Spring的aop功能，那么在这些BPP里头，就会有一个专门为aop服务的BPP，叫AbstractAutoProxyCreator：  
+- 首先，在Spring Bean初始化的过程中，有一个叫applyBeanPostProcessorsAfterInitialization的阶段，会获取BeanPostProcessor列表
+- 然后，逐个执行BPP的postProcessAfterInitialization方法。而当你开启了Spring的aop功能，那么在这些BPP里头，就会有一个专门为aop服务的BPP，叫AbstractAutoProxyCreator：  
 ![](/img/post/2018-08-11-Spring-Declare-Tx/2.png)
 
 看上图代码，AbstractAutoProxyCreator的postProcessAfterInitialization非常简单，调用getAdvicesAndAdvisorsForBean方法，获取Advice和Advisor列表，然后利用这些Advice和Advisor，调用createProxy方法，去创建代理对象。  
@@ -79,7 +82,7 @@ pointcut: TransactionAttributeSourcePointcut非常简单，就是判断方法上
 事务传播级别总共有以下这几种：  
 ![](/img/post/2018-08-11-Spring-Declare-Tx/10.png)
 
-其中require new和nested的区别，是大多数最感到疑惑的。  
+其中require new和nested的区别，是很多人容易感到疑惑的。  
 
 先来个问题，下面两个函数，分别调用100次，哪个更快？  
 ![](/img/post/2018-08-11-Spring-Declare-Tx/12.png)
@@ -89,7 +92,7 @@ pointcut: TransactionAttributeSourcePointcut非常简单，就是判断方法上
 - nested: 232ms
 - req new: 3256ms
 
-为什么nested比req new快这么多？？？  
+为什么nested比req new快这么多？  
 
 先看Spring代码里关于nested的注释：  
 ![](/img/post/2018-08-11-Spring-Declare-Tx/11.png)
@@ -119,7 +122,7 @@ savepoint就像一个执行，指向事务log的位置，当你需要回滚时�
 ![](/img/post/2018-08-11-Spring-Declare-Tx/16.png)
 ![](/img/post/2018-08-11-Spring-Declare-Tx/17.png)
 
-嗯，弄懂了req new和nested的原理，现在是时候回答之前提出的问题了，什么时候需要去修改事务传播级别？  
+嗯，弄懂了req new和nested的原理，现在是时候回答之前提出的问题了，什么时候需要去修改事务传播级别呢？  
 
 # 什么时候需要用到Require New
 
@@ -154,7 +157,7 @@ nested的特点在于，利用还原点来回滚，轻量级，性能好。
 
 内容综合了Spring的IOC和AOP的知识，所以如果读者没有了解过这两方面的内容，读起来可能比较吃力。  
 
-过几天我再把之前写过的Spring的文章整理一下，按照知识深度循序渐进排好序，分享给大家。  
+过两天我再把之前写过的Spring的文章整理一下，按照知识深度循序渐进排好序，分享给大家。  
 
 # 参考
 
