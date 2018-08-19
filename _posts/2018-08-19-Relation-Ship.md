@@ -17,7 +17,7 @@ tags:                               #标签
 # 沟通模型与人际隔阂
 
 书中提到了沟通中一个最简单的模型：  
-![](/img/post2018-08-19-Relation-Ship/communication_model.jpg)
+![](/img/post/2018-08-19-Relation-Ship/communication_model.jpg)
 
 信息传递者将自己的意图，编码成语言或者文字，接着，接受者需要对这些信息进行解码，也就是理解。    
 
