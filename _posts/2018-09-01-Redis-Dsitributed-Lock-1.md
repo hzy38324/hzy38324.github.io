@@ -263,6 +263,6 @@ Master节点负责接收写操作，并把数据同步给Slave节点，Slave节�
 
 - [Distributed locks with Redis](https://redis.io/topics/distlock)
 - [How to do distributed locking](http://martin.kleppmann.com/2016/02/08/how-to-do-distributed-locking.html)
-- [基于Redis的分布式锁到底安全吗| 张铁蕾](http://zhangtielei.com/posts/blog-redlock-reasoning.html)  
+- [基于Redis的分布式锁到底安全吗（上）| 张铁蕾](http://zhangtielei.com/posts/blog-redlock-reasoning.html)  
 
 
