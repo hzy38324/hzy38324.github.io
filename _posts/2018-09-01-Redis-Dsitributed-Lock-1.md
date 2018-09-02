@@ -1,6 +1,6 @@
 ---
 layout:     post                    # 使用的布局（不需要改）
-title:    如何用Redis实现分布式锁（1）             # 标题 
+title:    如何用Redis实现分布式锁（1）—— 单机版             # 标题 
 subtitle:   #副标题
 date:       2018-09-01              # 时间
 author:     ZY                      # 作者
