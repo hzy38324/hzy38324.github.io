@@ -31,15 +31,16 @@ end
 这套实现机制，在只有一个Redis实例的情况下，确实很完美。  
 
 然而，大多数生产环境，都不可能只部署一个Redis，至少也是主从架构：
-img
+![](/img/post/2018-09-02-Redis-Dsitributed-Lock-1/file-server.png)  
 
 更多的是主从+分片的架构：
-img
+![](/img/post/2018-09-02-Redis-Dsitributed-Lock-2/partition.png)  
 
-当然主从架构也可以进化为主从链架构（Master-Salve Chain）:
-img
+当然主从架构也可以进化为一主多从架构乃至主从链架构（Master-Salve Chain）:
+![](/img/post/2018-09-02-Redis-Dsitributed-Lock-2/master-multi-slave.png)  
+![](/img/post/2018-09-02-Redis-Dsitributed-Lock-2/master-slave-chain.png)  
 
-在主从架构下，之前那套分布式锁的机制，就失效了，原因正如之前说的：
+而其实在主从架构下，之前那套分布式锁的机制，就已经失效了，原因正如之前说的：
 > 如果A往Master放入了一把锁，然后再数据同步到Slave之前，Master crash，Slave被提拔为Master，这时候Master上面就没有锁了，这样其他进程也可以拿到锁，违法了锁的互斥性。 
 
 那么，要怎么解决这个问题呢？  
@@ -49,7 +50,7 @@ img
 针对Redis集群架构，redis的作者antirez提出了Redlock算法，来实现集群架构下的分布式锁。  
 
 Redlock算法并不复杂，我们先简单描述一下，假设我们Redis分片下，有三个Master的节点，这三个Master，又各自有一个Slave：  
-img
+![](/img/post/2018-09-02-Redis-Dsitributed-Lock-2/partition.png)  
 
 好，现在客户端想获取一把分布式锁：  
 
@@ -147,15 +148,10 @@ RedissonMultiLock line248:
 
 > 针对这个疑惑，给redisson提了个issuse（https://github.com/redisson/redisson/issues/1606），不过还没有答复 (￣▽￣)／ 
 
-
-# ZK分布式锁实现
-
-（待补充）
-
 # 参考
 
 - [Distributed locks with Redis](https://redis.io/topics/distlock)
 - [How to do distributed locking](http://martin.kleppmann.com/2016/02/08/how-to-do-distributed-locking.html)
-- [基于Redis的分布式锁到底安全吗（下）| 张铁蕾](http://zhangtielei.com/posts/blog-redlock-reasoning-part2.html)  
+- [基于Redis的分布式锁到底安全吗（下）\| 张铁蕾](http://zhangtielei.com/posts/blog-redlock-reasoning-part2.html)  
 
 
