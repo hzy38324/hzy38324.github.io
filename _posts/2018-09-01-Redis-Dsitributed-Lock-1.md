@@ -28,7 +28,7 @@ JVM里需要保证并发访问的正确性，在分布式系统里面，也同�
 
 举个例子，一个文件系统，为了提高性能，部署了三台文件服务器。  
 
-![](/img/post/2018-09-02-Redis-Dsitributed-Lock-1/file-server.png)  
+![](/img/post/2018-09-01-Redis-Dsitributed-Lock-1/file-server.png)  
 
 当服务器A在修改文件A的时候，其他服务器就不能对文件A进行修改，否则A的修改就会被覆盖掉，这个跟Git提交代码是一个道理：  
 
@@ -245,7 +245,7 @@ end
 嗯，很明显不是，上面讲的算法，**都有一个前提：只有一台Redis实例。**  
 
 而生产环境里，我们是不可能只部署一个实例的，至少，我们也是**主从**的架构：  
-![](/img/post/2018-09-02-Redis-Dsitributed-Lock-1/file-server.png)  
+![](/img/post/2018-09-01-Redis-Dsitributed-Lock-1/master-slave.png)  
 
 Master节点负责接收写操作，并把数据同步给Slave节点，Slave节点在平时，可以分担一些发往Master的读请求，并在Master crash的时候，承担起Master的作用，保证系统的高可靠。  
 
