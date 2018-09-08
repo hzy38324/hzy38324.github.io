@@ -123,7 +123,7 @@ void setCommand(client *c) {
     int unit = UNIT_SECONDS;
     int flags = OBJ_SET_NO_FLAGS;
 
-	// 遍历客户端传进来的参数
+	// 遍历客户端传进来的参数  
     for (j = 3; j < c->argc; j++) {
         char *a = c->argv[j]->ptr;
         robj *next = (j == c->argc-1) ? NULL : c->argv[j+1];
@@ -162,7 +162,7 @@ void setCommand(client *c) {
 
     c->argv[2] = tryObjectEncoding(c->argv[2]);
     
-    // 执行set命令
+    // 执行set命令  
     setGenericCommand(c,flags,c->argv[1],c->argv[2],expire,unit,NULL,NULL);
     
 }
@@ -173,7 +173,7 @@ void setCommand(client *c) {
 setGenericCommand长这样：  
 ```c
 void setGenericCommand(client *c, int flags, robj *key, robj *val, robj *expire, int unit, robj *ok_reply, robj *abort_reply) {
-   // 此处省去一大段代码...
+   // 此处省去一大段代码...  
    
     setKey(c->db,key,val);
     
@@ -181,7 +181,7 @@ void setGenericCommand(client *c, int flags, robj *key, robj *val, robj *expire,
     
     if (expire) setExpire(c,c->db,key,mstime()+milliseconds);
     
-    // 此处省去一大段代码...
+    // 此处省去一大段代码...  
 }
 ```
 
@@ -231,7 +231,7 @@ else
 end
 ```
 那么redis在执行lua脚本时，是原子的吗？答案当然是肯定的：  
-> **Atomicity of scripts**
+> **Atomicity of scripts**  
 > Redis uses the same Lua interpreter to run all the commands. Also Redis guarantees that a script is executed in an atomic way: no other script or Redis command will be executed while a script is being executed.
 
 上面这段话摘自redis文档上对于[eval命令](https://redis.io/commands/eval)的介绍，关于这个命令的更多信息，上面都有，这里就不赘述了。  

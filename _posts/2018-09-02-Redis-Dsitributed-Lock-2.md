@@ -31,7 +31,7 @@ end
 这套实现机制，在只有一个Redis实例的情况下，确实很完美。  
 
 然而，大多数生产环境，都不可能只部署一个Redis，至少也是主从架构：
-![](/img/post/2018-09-02-Redis-Dsitributed-Lock-1/file-server.png)  
+![](/img/post/2018-09-01-Redis-Dsitributed-Lock-1/master-slave.png)   
 
 更多的是主从+分片的架构：
 ![](/img/post/2018-09-02-Redis-Dsitributed-Lock-2/partition.png)  
