@@ -42,7 +42,7 @@ public static void main(String[] args) {
         consumer.start();
     }
 ```
-为了方便调试，我将向nsqlookup查询最新nsq信息的时间间隔，由一分钟一次，改为了十秒一次：  
+为了方便调试，我将向nsqlookup查询最新nsq信息的时间间隔，**由一分钟一次，改为了十秒一次**：  
 com.github.brainlag.nsq.NSQConsumer#lookupPeriod:  
 ```java
 private long lookupPeriod = 10 * 1000; // how often to recheck for new nodes (and clean up non responsive nodes)
@@ -54,7 +54,7 @@ private long lookupPeriod = 10 * 1000; // how often to recheck for new nodes (an
 ```
 curl -X POST http://127.0.0.1:4151/topic/create?topic=order_created
 ```
-nsq创建完topic后，会自动向nsqlookup注册新的topic节点。 如下图，是我执行了创建topic命令后，nsq和nsqlookup控制台打印的日志：  
+**nsq创建完topic后，会自动向nsqlookup注册新的topic节点。** 如下图，是我执行了创建topic命令后，nsq和nsqlookup控制台打印的日志：  
 
 ![](/img/post/2018-10-02-Nsq-1/nsq-create-topic.jpg)  
 
@@ -72,7 +72,7 @@ nsq创建完topic后，会自动向nsqlookup注册新的topic节点。 如下图
 ```
 curl -d 'hello world' 'http://127.0.0.1:4151/pub?topic=order_created'
 ```
-消息发布给nsq后，就像之前讲的，nsq会把消息复制到topic下的所有channel中，每个channel复制一份，接着channel再向和它建立连接的其中一个消费者实例，推送这条消息。  
+消息发布给nsq后，就像之前讲的，**nsq会把消息复制到topic下的所有channel中，每个channel复制一份，接着channel再向和它建立连接的其中一个消费者实例，推送这条消息。**  
 
 此时，在消费者侧，已经接收到了消息，控制台打印接收到的消息内容：  
 ![](/img/post/2018-10-02-Nsq-1/nsq-consumer-consume.png)  
@@ -89,6 +89,8 @@ curl -d 'hello world' 'http://127.0.0.1:4151/pub?topic=order_created'
 
 当然，文档都是针对Linux或者OS X的，如果你想在Windows上尝试，那我只能说，总有一种方式适合你。  
 
+# 小结
+
 这篇文章把上一节学到的各个组件串联起来，演示了
 
 - 消费者是如何借助nsqlookup，和nsq建立连接
@@ -96,11 +98,11 @@ curl -d 'hello world' 'http://127.0.0.1:4151/pub?topic=order_created'
 
 但是我们的视角还是比较粗略的，很多细节都没考虑到，比如：  
 
-- 消息会不会在投递到消费者之前，被中断，导致消费没有被消费呢？
+- **消息投递语义**：消息会不会在投递到消费者之前，被中断，导致消费没有被消费呢？
 - 会不会出现一条消息被多次投递的情况？
-- 消息是有序的，还是无序的？
-- 为什么nsq要采用push，也就是nsq给消费者推送的方式，而不是消费者主动过来pull？
-- 采用push，消费者侧如何做流控？
+- **消息顺序**：消息是有序的，还是无序的？
+- **push or pull**: 为什么nsq要采用push，也就是nsq给消费者推送的方式，而不是消费者主动过来pull？
+- 采用push，消费者侧如何做**流控**？
 - ...  
 
 这些细节，我们留到下次一起讨论。 
@@ -108,5 +110,6 @@ curl -d 'hello world' 'http://127.0.0.1:4151/pub?topic=order_created'
 # 参考
 
 - [Nsq官方文档](https://nsq.io/)
+- [Nsq Java Client](https://github.com/brainlag/JavaNSQClient)
 
 
