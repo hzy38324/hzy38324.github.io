@@ -16,7 +16,7 @@ tags:                               #标签
 
 接着聊MQ.  
 
-上一篇文章，讲的都是些细碎的知识点，现在，**让我们把这些知识点整合起来，来看看，一条消息，是如何从生产到被消费的。**  
+[上一篇文章](http://bridgeforyou.cn/2018/10/02/Nsq-1-From-Queue-To-MQ/)，讲的都是些细碎的知识点，现在，**让我们把这些知识点整合起来，来看看，一条消息，是如何从生产到被消费的。**  
 
 ![](/img/post/2018-10-02-Nsq-1/nsq-topic-channel-consumer.gif)  
 
@@ -25,22 +25,22 @@ tags:                               #标签
 假设消费者最先启动，它要消费topic为”order_created“的消息，这时候它向nsqlookup调用`/lookup`接口，试图获取对应topic的nsq。由于nsqlookup还没启动，因此获取失败，不过这并不影响消费者的启动流程，因为它会每隔一段时间，去尝试重新拉取最新的数据。  
 ![](/img/post/2018-10-02-Nsq-1/nsq-java-client-connect-failed.png)  
 
-消费者可以使用nsq java客户端的示例代码来模拟：  
+消费者可以使用[nsq java客户端](https://github.com/brainlag/JavaNSQClient)的示例代码来模拟：  
 ```java
 public static void main(String[] args) {
-        NSQLookup lookup = new DefaultNSQLookup();
-        lookup.addLookupAddress("localhost", 4161);
-        NSQConsumer consumer = new NSQConsumer(lookup, "order_created", "send_msg", (message) -> {
-            System.out.println("received: " + message);
-            //now mark the message as finished.
-            message.finished();
+    NSQLookup lookup = new DefaultNSQLookup();
+    lookup.addLookupAddress("localhost", 4161);
+    NSQConsumer consumer = new NSQConsumer(lookup, "order_created", "send_msg", (message) -> {
+    System.out.println("received: " + message);
+    //now mark the message as finished.
+    message.finished();
 
-            //or you could requeue it, which indicates a failure and puts it back on the queue.
-            //message.requeue();
-        });
+    //or you could requeue it, which indicates a failure and puts it back on the queue.
+    //message.requeue();
+    });
 
-        consumer.start();
-    }
+    consumer.start();
+}
 ```
 为了方便调试，我将向nsqlookup查询最新nsq信息的时间间隔，**由一分钟一次，改为了十秒一次**：  
 com.github.brainlag.nsq.NSQConsumer#lookupPeriod:  
