@@ -1,6 +1,6 @@
 ---
 layout:     post                    # 使用的布局（不需要改）
-title:    MQ(7) —— Nsq in 有赞             # 标题 
+title:    MQ(6) —— Nsq in 有赞             # 标题 
 subtitle:   #副标题
 date:       2018-10-02              # 时间
 author:     ZY                      # 作者
