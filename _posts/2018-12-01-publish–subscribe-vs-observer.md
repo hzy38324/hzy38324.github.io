@@ -4,7 +4,7 @@ title:    观察者模式 vs 发布订阅模式             # 标题
 subtitle:   #副标题
 date:       2018-12-01              # 时间
 author:     ZY                      # 作者
-header-img: img/banner/how-to-build-an-efficient-and-scalable-cache.jpg    #这篇文章标题背景图片
+header-img: img/banner/girls.jpeg    #这篇文章标题背景图片
 catalog: true                       # 是否归档
 tags:                               #标签
     - 设计模式
