@@ -1,6 +1,6 @@
 ---
 layout:     post                    # 使用的布局（不需要改）
-title:    Mysql可重复读（2） —— xxx             # 标题 
+title:    Mysql可重复读（2） —— 快照真的就是快照吗             # 标题 
 subtitle:   #副标题
 date:       2019-01-22              # 时间
 author:     ZY                      # 作者
