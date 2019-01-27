@@ -86,6 +86,10 @@ start transaction with consistent snapshot;
 
 下一讲，咱们来聊聊可重复读的实现原理 —— MVCC。  
 
+# 参考
+
+- 《Mysql实战45讲》丁奇
+- [Innodb Transaction Isolation Levels](https://dev.mysql.com/doc/refman/8.0/en/innodb-transaction-isolation-levels.html)
 
 
 
