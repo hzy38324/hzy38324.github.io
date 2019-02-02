@@ -1,10 +1,10 @@
 # Site settings
-title: Bridge for You
-SEOTitle: Bridge for You
+title: 柳树的絮絮叨叨
+SEOTitle: 柳树的絮絮叨叨
 header-img: img/index-banner.jpg
 email: 2668612407@qq.com
-description: "Bridge for You"
-keyword: "Blog, Java, JVM, Spring"
+description: "柳树的絮絮叨叨"
+keyword: "柳树，博客"
 url: "http://hzy38324.github.io"          # your host, for absolute URL
 baseurl: ""      # for example, '/blog' if your blog hosted on 'host/blog'
 github_repo: "https://github.com/hzy38324/hzy38324.github.io.git" # you code repository
