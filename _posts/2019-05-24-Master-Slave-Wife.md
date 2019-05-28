@@ -1,6 +1,6 @@
 ---
 layout:     post                    # 使用的布局（不需要改）
-title:    MS             # 标题 
+title:    MS - Wife             # 标题 
 subtitle:   #副标题
 date:       2019-05-24              # 时间
 author:     ZY                      # 作者
