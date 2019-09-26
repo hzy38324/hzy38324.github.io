@@ -34,23 +34,47 @@ https://pediaa.com/what-is-the-difference-between-hierarchical-network-and-relat
 
 ====================
 
-用例子贯穿全文
+我们正在做一个电子书的小程序。
+
+1.0 层次模型数据库
+
+用户购买，生成订单，订单详情里有用户购买的电子书：
+
+![层次模型数据库](/img/post/2019-09-23-database-choose/h-db.png)  
+
+一层一层铺开，一对多，一又对多，这是「层次（Hierarchical）模型数据库」。
 
 
 
-层次模型数据库
+2.0 网状模型数据库
 
--> 例子：顾客 订单 商品
+一笔订单可以购买多本电子书，一本电子书也可以被多笔订单购买：
 
-https://explainextended.com/2009/08/23/what-is-a-relational-database/
+![网状模型数据库](/img/post/2019-09-23-database-choose/n-db.png)  
+
+这就形成了「多对多」的「网状（Network）模型数据库」。
+
+为什么没人用网状模型数据库？
+
+为什么都在用关系模型数据库？
+
+你会说，这样不方便遍历所有订单。
+
+并不会，你再加一个根节点就好：
+
+![](/img/post/2019-09-23-database-choose/root-order.png) 
+
+你会说，这样查找效率很低。
+
+也不会，因为可以换下数据结构，比如换成 B+ 树。
+
+为什么没人用网状模型数据库？
+
+为什么都在用关系模型数据库？
 
 
 
-网状模型数据库
-
-
-
-关系模型数据库
+3.0 关系模型数据库
 
 无论是层次模型还是网状模型，程序员看到的，都是实实在在的物理存储结构。
 
@@ -62,12 +86,21 @@ https://explainextended.com/2009/08/23/what-is-a-relational-database/
 
 **用逻辑结构（logical representation of data）代替物理结构（physical representation of data）**
 
-而这个观念的提出，来自于 1970 年 Codd 的一篇论文，[A Relational Model of Data for Large Shared Data Banks](https://www.seas.upenn.edu/~zives/03f/cis550/codd.pdf)：
+所谓「逻辑结构」，也就是我们经常看到的「表格」，User 是一张表格，Order 是一张表格，Book 又是一张表格，它们之间的关系，用 id 来关联，这些 id，可能是 number 类型，也可能是 string 类型：
+
+![](/img/post/2019-09-23-database-choose/r-db.png) 
+
+但你看到的，不一定就是实际的，你看到的只是让你方便理解的「逻辑结构」，真实数据自然不是这样按表格来存储，表格无异于一个数组，数组查询是很慢的。
+
+真实的「物理结构」，也许还是像「层次模型」和「网状模型」一样，是复杂的数据结构。
+
+但到底是怎样的数据结构，你都无需关心，你只需把它想象成一张「表」去操作，就连可视化工具，都会帮你把数据可视化成表，来方便你理解。
+
+这个观念的提出，来自于 1970 年 Codd 的一篇论文，[A Relational Model of Data for Large Shared Data Banks](https://www.seas.upenn.edu/~zives/03f/cis550/codd.pdf)：
 
 > Future users of large data banks must **be protected from having to know how the data is organized in the machine** (the internal representation). 
 >
-> Activities of users at terminals and most application programs should **remain unaffected when the internal representation of data is changed** and even when some aspects of the external representation
-> are changed. 
+> Activities of users at terminals and most application programs should **remain unaffected when the internal representation of data is changed** and even when some aspects of the external representation are changed. 
 >
 > —— Codd
 
@@ -80,11 +113,6 @@ Codd 的这种思想，其实就是经济学里提到的：**分工产生效能*
 开发时写的代码少了，耦合性降低了，数据也不容易损坏 …… 也就提高了生产效率（productive）。
 
 **一切能用同样的耗能，带来更多效能的技术，都会被广泛使用。**
-
-
-
-关系的维护：通过 ID 来关联
-
 
 
 nosql
