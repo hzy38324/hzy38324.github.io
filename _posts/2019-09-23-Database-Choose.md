@@ -10,8 +10,6 @@ tags:                               #标签
     - 数据库
 ---
 
-
-
 我们正在做一个电子书的小程序。
 
 # 1.0 层次模型数据库
@@ -144,7 +142,7 @@ ACID 在分布式系统上实现起来就会变得难以实现，即使实现了
 
 - **而 NoSQL 生而分布式，可拓展性强，然后才向更高的「准确性」发展。**
 
-**NoSQL ，not only SQL，其实就是指对打破了 RDB 那种严格事务和关系模型约束的那些数据库**，而随着要解决的问题的不同，又诞生了各种各样的 NoSQL。
+**NoSQL ，not only SQL，其实就是对那种打破了 RDB 严格事务和关系模型约束的那些数据库的泛指**，而随着要解决的问题的不同，又诞生了各种各样的 NoSQL。
 
 首先是「列式数据库」（Column-oriented DBMS），数据量上去了，我们想分析网站用户的年龄分布，简单说，就是你需要对同一个特征进行大数据量的分析统计，于是把原来 RDB 的「按行存储」的范式打破，变成了「按列存储」，代表作 HBase；
 
@@ -172,29 +170,18 @@ ACID 在分布式系统上实现起来就会变得难以实现，即使实现了
 
 正如一位大牛说的：
 
-> 设计实践中，要基于需求、业务驱动架构。无论选用RDB/NoSQL，**一定是以需求为导向，最终数据存储方案必然是各种权衡的综合性设计**。
+> 设计实践中，要基于需求、业务驱动架构。无论选用 RDB/NoSQL，**一定是以需求为导向，最终数据存储方案必然是各种权衡的综合性设计**。 
 
 
 
-推荐阅读
+# 参考
 
+- [Codd：A Relational Model of Data for Large Shared Data Banks](https://www.seas.upenn.edu/~zives/03f/cis550/codd.pdf)
+- 《数据库系统概念》
+- [historically, what made relational databases popular?](https://stackoverflow.com/questions/2371066/historically-what-made-relational-databases-popular)
 
+- [What is the Difference Between Hierarchical Network and Relational Database Model](https://pediaa.com/what-is-the-difference-between-hierarchical-network-and-relational-database-model/)
 
-参考
-层次 网状 关系型
-
-Codd https://www.seas.upenn.edu/~zives/03f/cis550/codd.pdf
-
-https://stackoverflow.com/questions/2371066/historically-what-made-relational-databases-popular
-
-https://pediaa.com/what-is-the-difference-between-hierarchical-network-and-relational-database-model/
-
-廖雪峰 https://www.liaoxuefeng.com/wiki/1177760294764384/1179613436834240
-
-《数据库系统概念》
-
-通俗易懂 https://juejin.im/post/5b6d62ddf265da0f491bd200
-
-https://en.wikipedia.org/wiki/NoSQL
-
-https://en.wikipedia.org/wiki/Database
+- [廖雪峰：关系数据库概述](https://www.liaoxuefeng.com/wiki/1177760294764384/1179613436834240) 
+- [Wiki  NoSQL](https://en.wikipedia.org/wiki/NoSQL)
+- [Wiki Database](https://en.wikipedia.org/wiki/Database)
