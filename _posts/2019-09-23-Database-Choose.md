@@ -18,7 +18,7 @@ tags:                               #标签
 
 ![层次模型数据库](/img/post/2019-09-23-database-choose/h-db.png)  
 
-一层一层铺开，一对多，一又对多，这是「层次（Hierarchical）模型数据库」。
+一层一层铺开，一对多，这是「层次模型数据库」（Hierarchical Database）。
 
 
 
@@ -28,25 +28,25 @@ tags:                               #标签
 
 ![网状模型数据库](/img/post/2019-09-23-database-choose/n-db.png)  
 
-这就形成了「多对多」的「网状（Network）模型数据库」。
+这就形成了「多对多」的「网状模型数据库」（Network Database）。
 
-为什么没人用网状模型数据库？
+上面讲的两种数据库，也许你听都没听过。
 
-为什么都在用关系模型数据库？
+我们用的，是「关系模型」，而非上面的「层次模型」或者「网状模型」。
+
+为什么？
 
 你会说，这样不方便遍历所有订单。
 
-并不会，你再加一个根节点就好：
+并不会，再加一个根节点就好：
 
 ![](/img/post/2019-09-23-database-choose/root-order.png) 
 
 你会说，这样查找效率很低。
 
-也不会，因为可以换下数据结构，比如换成 B+ 树。
+也不会，因为可以优化下数据结构，比如换成 B+ 树。
 
-为什么没人用网状模型数据库？
-
-为什么都在用关系模型数据库？
+为什么我们从一开始就在用「关系模型数据库」？
 
 
 
@@ -58,7 +58,7 @@ tags:                               #标签
 
 插入时，你也要照着数据结构，用对应算法来插入，否则你就破坏了数据的组织结构，数据也就坏掉了。
 
-因为我们都没用过前面两种数据库，所以觉得「关系型数据库」（以下简称 RDB）的一切都理所当然，但其实，它做出了一个革命性的变革：
+因为我们都没用过前面两种数据库，所以觉得「关系模型数据库」（以下简称 RDB）的一切都理所当然，但其实，它做出了一个革命性的变革：
 
 **用逻辑结构（logical representation of data）代替物理结构（physical representation of data）**
 
@@ -94,9 +94,9 @@ Codd 的这种思想，其实就是经济学里提到的：**分工产生效能*
 
 # NoSQL
 
-那么后来为什么又有了 NoSQL 呢？
+那后来为什么又有了 NoSQL 呢？
 
-在 RDB 被发明的时代，软件多用于大型企业，比如银行、金融等等，**人们对数据的要求非常纯粹：准确、可靠、安全，让数据按照期望，正确的写入**，不要给老子算错钱就好。于是有了事务的 **ACID**:原子性、一致性、隔离性和持久性。
+在 RDB 被发明的时代，软件多用于大型企业，比如银行、金融等等，**人们对数据的要求非常纯粹：准确、可靠、安全，让数据按照期望，正确的写入**，不要给老子算错钱就好，于是有了具有 ACID 特性的事务：原子性、一致性、隔离性和持久性。
 
 那时候用网络的人很少，通过终端来访问客户端的人，更少，自然的，数据库的数据量和访问量都跟现在没法比，一台机器，足矣，最多再来个一主多从：
 
@@ -144,15 +144,15 @@ ACID 在分布式系统上实现起来就会变得难以实现，即使实现了
 
 **NoSQL ，not only SQL，其实就是对那种打破了 RDB 严格事务和关系模型约束的那些数据库的泛指**，而随着要解决的问题的不同，又诞生了各种各样的 NoSQL。
 
-首先是「列式数据库」（Column-oriented DBMS），数据量上去了，我们想分析网站用户的年龄分布，简单说，就是你需要对同一个特征进行大数据量的分析统计，于是把原来 RDB 的「按行存储」的范式打破，变成了「按列存储」，代表作 HBase；
+首先是「列式数据库」（Column-oriented DBMS），数据量上去了，我们想分析网站用户的年龄分布，简单说，就是你需要对同一个特征进行大数据量的分析统计，于是把原来 RDB 的「按行存储」的范式打破，变成了「按列存储」，比如 HBase；
 
-然后你发现有些数据变动不是很大，但是经常需要被查询， 查询时还要关联很多张表，于是你把这些来自不同表的数据，揉成一个大对象，按 key-value 的格式存起来，代表作：Redis；
+然后你发现有些数据变动不是很大，但是经常需要被查询， 查询时还要关联很多张表，于是你把这些来自不同表的数据，揉成一个大对象，按 key-value 的格式存起来，比如 Redis；
 
-再后来你需要对博客内容进行相关性搜索，传统 RDB 不支持相关性搜索，最重要的，还是扩展性差，增加机器的带来边际效益有限，于是有了「全文搜索引擎」，代表作：Elasticsearch；
+再后来你需要对博客内容进行相关性搜索，传统 RDB 不支持相关性搜索，最重要的，还是扩展性差，增加机器的带来边际效益有限，于是有了「全文搜索引擎」，比如 Elasticsearch；
 
 除此之外，还有「文档数据库」、「图形数据库」……  
 
-没有一种数据库是银弹。
+**没有一种数据库是银弹。**
 
 
 
@@ -178,10 +178,10 @@ ACID 在分布式系统上实现起来就会变得难以实现，即使实现了
 
 - [Codd：A Relational Model of Data for Large Shared Data Banks](https://www.seas.upenn.edu/~zives/03f/cis550/codd.pdf)
 - 《数据库系统概念》
-- [historically, what made relational databases popular?](https://stackoverflow.com/questions/2371066/historically-what-made-relational-databases-popular)
+- [Historically, what made relational databases popular?](https://stackoverflow.com/questions/2371066/historically-what-made-relational-databases-popular)
 
 - [What is the Difference Between Hierarchical Network and Relational Database Model](https://pediaa.com/what-is-the-difference-between-hierarchical-network-and-relational-database-model/)
 
 - [廖雪峰：关系数据库概述](https://www.liaoxuefeng.com/wiki/1177760294764384/1179613436834240) 
-- [Wiki  NoSQL](https://en.wikipedia.org/wiki/NoSQL)
-- [Wiki Database](https://en.wikipedia.org/wiki/Database)
+- [Wiki - NoSQL](https://en.wikipedia.org/wiki/NoSQL)
+- [Wiki - Database](https://en.wikipedia.org/wiki/Database)
