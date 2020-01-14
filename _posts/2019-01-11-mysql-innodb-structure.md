@@ -40,7 +40,21 @@ InnoDB 内存架构
 
 1、Buffer Pool
 
+> The buffer pool is an area in main memory where `InnoDB` caches table and index data as it is accessed.
 
+正如上文提到的，MySQL 不会直接取修改磁盘的数据，因为这样做太慢了，MySQL 会先改内存，然后记录 redo log，等有空了再刷磁盘，如果内存里没有数据，就去磁盘 load。
+
+而这些数据存放的地方，就是 Buffer Pool。
+
+我们平时开发时，会用 redis 来做缓存，缓解数据库压力，其实 MySQL 自己也做了一层类似缓存的东西。
+
+MySQL 是以「页」（page）为单位从磁盘读取数据的，Buffer Pool 里的数据也是如此，实际上，Buffer Pool 是`a linked list of pages`，一个以页为元素的链表。为什么是链表？因为和缓存一样，它也需要淘汰机制。
+
+Buffer Pool 采用基于 LRU 的算法来管理内存：
+
+img
+
+>  关于 Buffer Pool 的更多知识，诸如如何配置大小、如何监控等等：[Buffer Pool](https://dev.mysql.com/doc/refman/8.0/en/innodb-buffer-pool.html)
 
 2、Change Buffer
 
