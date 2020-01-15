@@ -75,9 +75,17 @@ img Change Buffer
 
 3、Adaptive Hash Index
 
+MySQL 索引，不管是在磁盘里，还是被 load 到内存后，都是 B+ 树，B+ 树的查找次数取决于树的深度。你看，数据都已经放到内存了，还不能“一下子”就找到它，还要“几下子”，这空间牺牲的是不是不太值得？
 
+尤其是那些频繁被访问的数据，每次过来都要走 B+ 树来查询，这时就会想到，我用一个指针把数据的位置记录下来不就好了？
+
+这就是「自适应哈希索引」（Adaptive Hash Index）。自适应，顾名思义，MySQL 会自动评估使用自适应索引是否值得，如果观察到建立哈希索引可以提升速度，则建立。
 
 4、Log Buffer
+
+> The log buffer is the memory area that holds data to be written to the log files on disk.
+
+从上面架构图可以看到，Log Buffer 里的 redo log，会被刷到磁盘里。
 
 
 
