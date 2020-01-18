@@ -1,6 +1,6 @@
 ---
 layout:     post                    # 使用的布局（不需要改）
-title:     MySQL innodb 架构   # 标题 
+title:     MySQL InnoDB 架构   # 标题 
 subtitle:   #副标题
 date:       2019-01-11              # 时间
 author:     ZY                      # 作者
@@ -10,17 +10,17 @@ tags:                               #标签
     - Mysql
 ---
 
-引言：MySQL的设计之美
+# 引言：MySQL的设计之美
 
-在上一讲：MySQL 是如何实现 ACID 中的 D 的？里，用了一个问题，给大家介绍了 MySQL 中的两个成员 binlog 和 redo log。然而，这只是 MySQL 家族里的两个小喽啰，Mysql 可以做到高性能高可靠，靠的绝对不只有他们俩。
+在上一讲：[MySQL 是如何实现 ACID 中的 D 的？](https://zhuanlan.zhihu.com/p/98778890)里，用了一个问题，给大家介绍了 MySQL 中的两个成员 binlog 和 redo log。然而，这只是 MySQL 家族里的两个小喽啰，Mysql 可以做到高性能高可靠，靠的绝对不只有他们俩。
 
 Mysql 里还有什么其他成员呢？
 
-对于 Mysql，要记住、或者要放在你随时可以找到的地方的两张图，一张是 MySQL 架构图，另一张则是 innodb 架构图：
+对于 Mysql，要记住、或者要放在你随时可以找到的地方的两张图，一张是 MySQL 架构图，另一张则是 InnoDB 架构图：
 
 img mysql 架构图
 
-img innodb 架构图
+img InnoDB 架构图
 
 遇到问题，或者学习到新知识点时，就往里套，想一想，这是对应这两张图的哪个模块、是属于具体哪个成员的能力。
 
@@ -32,11 +32,11 @@ img innodb 架构图
 
 在自己写一个存储引擎之前，我们先来了解一下别人是怎么实现的，而 InnoDB，毫无疑问，是其中的佼佼者。
 
-通常我们说 Mysql 高性能高可靠，都是指基于 innodb 存储引擎的 Mysql，所以，这一讲，先让我们来看看，除了 redo log，InnoDB 里还有哪些成员，他们都有什么能力，承担了什么样的角色，他们之间又是怎么配合的？
+通常我们说 Mysql 高性能高可靠，都是指基于 InnoDB 存储引擎的 Mysql，所以，这一讲，先让我们来看看，除了 redo log，InnoDB 里还有哪些成员，他们都有什么能力，承担了什么样的角色，他们之间又是怎么配合的？
 
 
 
-InnoDB 内存架构
+# InnoDB 内存架构
 
 1、Buffer Pool
 
@@ -85,39 +85,83 @@ MySQL 索引，不管是在磁盘里，还是被 load 到内存后，都是 B+ �
 
 > The log buffer is the memory area that holds data to be written to the log files on disk.
 
-从上面架构图可以看到，Log Buffer 里的 redo log，会被刷到磁盘里。
+从上面架构图可以看到，Log Buffer 里的 redo log，会被刷到磁盘里：
+
+img
 
 
 
-内存和磁盘之间：操作系统缓存
+# 内存和磁盘之间：Operating System Cache
+
+在内存和磁盘之间，你看到 MySQL 画了一层叫做 Operating System Cache 的东西，其实这个不属于 InnoDB 的能力，而是操作系统为了提升性能，在磁盘前面加的一层高速缓存，这里不展开细讲，感兴趣的同学可以参考下维基百科：[Page Cache](https://en.wikipedia.org/wiki/Page_cache)
 
 
 
-InnoDB 磁盘架构
+# InnoDB 磁盘架构
 
-1、Tablespaces
+磁盘里有什么呢？除了表结构定义和索引，还有一些为了高性能和高可靠而设计的角色，比如 redo log、undo log、Change Buffer，以及 Doublewrite Buffer 等等.
 
+> 有同学会问，那表的数据呢？其实只要理解了 InnoDB 里的所有表数据，都以索引（聚簇索引+二级索引）的形式存储起来，就知道索引已经包含了表数据。
 
+1、表空间（Tablespaces）
+
+从架构图可以看到，Tablespaces 分为五种：
+
+- The System Tablespace
+- File-Per-Table Tablespaces
+- General Tablespace 
+- Undo Tablespaces
+- Temporary Tablespaces
+
+其中，我们平时创建的表的数据，可以存放到 The System Tablespace 、File-Per-Table Tablespaces、General Tablespace 三者中的任意一个地方，具体取决于你的配置和创建表时的 sql 语句。
+
+> 这里同样不展开，如何选择不同的表空间存储数据？不同表空间各自的优势劣势等等，传送门：[Tablespaces](https://dev.mysql.com/doc/refman/8.0/en/innodb-tablespace.html)
 
 2、Doublewrite Buffer
 
+如果说 change buffer 是提升性能，那么 Doublewrite Buffer 就是保证数据页的可靠性。
+
+怎么理解呢？
+
+前面提到过，MySQL 以「页」为读取和写入单位，一个「页」里面有多行数据，写入数据时，MySQL 会先写内存中的页，然后再刷新到磁盘中的页。
+
+这时问题来了，假设在某一次从内存刷新到磁盘的过程中，一个「页」刷了一半，突然操作系统或者 MySQL 进程奔溃了，这时候，内存里的页数据被清除了，而磁盘里的页数据，刷了一半，处于一个中间状态，不尴不尬，可以说是一个「不完整」，甚至是「坏掉的」的页。
+
+有同学说，不是有 Redo Log 么？其实这个时候 Redo Log 也已经无力回天，Redo Log 是要在磁盘中的页数据是正常的、没有损坏的情况下，才能把磁盘里页数据 load 到内存，然后应用 Redo Log。而如果磁盘中的页数据已经损坏，是无法应用 Redo Log 的。
+
+所以，MySQL 在刷数据到磁盘之前，要先把数据写到另外一个地方，也就是 Doublewrite Buffer，写完后，再开始写磁盘。Doublewrite Buffer 可以理解为是一个备份（recovery），万一真的发生 crash，就可以利用 Doublewrite Buffer 来修复磁盘里的数据。
+
+> 留个问题，有了 Doublewrite Buffer 后，不就意味着 MySQL 要写两次磁盘？性能岂不是很差？
 
 
-3、Redo Log
+
+# 未完待续
+
+让我们再来回顾一下这张图：
+
+img
+
+这篇文章，正是顺着这张图，给大家介绍了 InnoDB 里的每一个成员、成员各自扮演的角色、提供的能力。
+
+当然，这张图里能表达的信息是有限的，我习惯称这种图为「架构图」，或者「模块图」。
+
+用 DDD 的话来讲，这张图可以告诉你，MySQL 里有哪些「域」（子域、核心域、通用域、支撑域），配合文字介绍，可以知道这些「域」之间都有什么样的能力、行为，知道「域」之间一些简单的交互。
+
+然而，这张图并没有告诉你具体某个业务中，这些成员之间要如何配合，来提供一个服务，或者说，如果你的技术方案里只有这张图，那你进入开发阶段后，最多最多，只能新建几个微服务应用，新建几个 class 文件，而写不出这些个微服务、class 之间如何协作起来提供一个服务的代码。
+
+所以，下一篇文章，将基于我们这篇文章以及上一篇文章的内容，画出一张足以描述具体业务流程的图。
+
+什么样的图有这种描述力呢？
+
+自然是 swim-lanes，也就是我们常说的「泳道图」。
+
+在那之后，我们将深入到每一个细分领域，以及具体到一些实际问题中，来把 MySQL 彻底学透。
 
 
 
-4、Undo Logs
+# 参考
 
-
-
-未完待续
-
-磁盘存储格式&索引
-
-
-
-参考
-
+- [The InnoDB Storage Engine](https://dev.MySQL.com/doc/refman/5.7/en/innodb-storage-engine.html)
 - 《MySQL技术内幕》
+- 丁奇：MySQL实战45讲
 
