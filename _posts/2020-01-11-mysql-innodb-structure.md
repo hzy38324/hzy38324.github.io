@@ -1,6 +1,6 @@
 ---
 layout:     post                    # 使用的布局（不需要改）
-title:     MySQL InnoDB 架构   # 标题 
+title:     MySQL的InnoDB存储引擎是怎么设计的？    # 标题 
 subtitle:   #副标题
 date:       2020-01-11              # 时间
 author:     ZY                      # 作者
@@ -11,11 +11,11 @@ tags:                               #标签
 ---
 在上一讲：[MySQL 是如何实现 ACID 中的 D 的？](https://zhuanlan.zhihu.com/p/98778890)里，用了一个问题，给大家介绍了 MySQL 中的两个成员 binlog 和 redo log。然而，这只是 MySQL 家族里的两个小喽啰，Mysql 可以做到高性能高可靠，靠的绝对不只有他们俩。
 
-Mysql 里还有什么其他成员呢？
+MySQL 里还有什么其他成员呢？
 
-对于 Mysql，要记住、或者要放在你随时可以找到的地方的两张图，一张是 MySQL 架构图，另一张则是 InnoDB 架构图：
+对于 MySQL，要记住、或者要放在你随时可以找到的地方的两张图，一张是 MySQL 架构图，另一张则是 InnoDB 架构图：
 
-![mysql架构](/img/post/2019-10-29-mysql-update-sql/mysql-l-a.png)  
+![MySQL 架构](/img/post/2019-10-29-mysql-update-sql/mysql-l-a.png)  
 
 ![innodb-architecture](/img/post/2019-10-29-mysql-update-sql/innodb-architecture.png)
 
@@ -25,7 +25,7 @@ Mysql 里还有什么其他成员呢？
 
 对于这么重要的一层能力，MySQL 提供了极强的扩展性，你可以定义自己要使用什么样的存储引擎：InnoDB、MyISAM、MEMORY、CSV，甚至可以自己开发一个存储引擎然后使用它。
 
-> 我一直觉得 MySQL 的设计，非常有美感，高内聚松耦合的原则在 MySQL 身上始终体现着，学习 MySQL，学的不只是如何更好的使用 MySQL，更是学习如何更好的进行系统设计。
+> 我一直觉得 MySQL 的设计，是教科书式的，高内聚松耦合，边界明确，职责清晰。学习 MySQL，学的不只是如何更好的使用 MySQL，更是学习如何更好的进行系统设计。
 
 通常我们说 Mysql 高性能高可靠，都是指基于 InnoDB 存储引擎的 Mysql，所以，这一讲，先让我们来看看，除了 redo log，InnoDB 里还有哪些成员，他们都有什么能力，承担了什么样的角色，他们之间又是怎么配合的？
 
