@@ -91,7 +91,7 @@ MySQL 索引，不管是在磁盘里，还是被 load 到内存后，都是 B+ �
 
 ![Log Buffer](/img/post/2020-01-11-innodb-arct/log-buffer.png)  
 
-# 内存和磁盘之间：Operating System Cache
+# Operating System Cache
 
 在内存和磁盘之间，你看到 MySQL 画了一层叫做 Operating System Cache 的东西，其实这个不属于 InnoDB 的能力，而是操作系统为了提升性能，在磁盘前面加的一层高速缓存，这里不展开细讲，感兴趣的同学可以参考下维基百科：[Page Cache](https://en.wikipedia.org/wiki/Page_cache)
 
@@ -147,9 +147,9 @@ MySQL 索引，不管是在磁盘里，还是被 load 到内存后，都是 B+ �
 
 所以，下一篇文章，将基于我们这篇文章以及上一篇文章的内容，画出一张足以描述具体业务流程的图。
 
-什么样的图有这种描述力呢？
+**什么样的图有这种描述力呢？**
 
-自然是 swim-lanes，也就是我们常说的「泳道图」。
+**自然是 swim-lanes，也就是我们常说的「泳道图」。**
 
 在那之后，我们将深入到每一个细分领域，以及具体到一些实际问题中，来把 MySQL 彻底学透。
 
