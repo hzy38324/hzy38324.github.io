@@ -1,6 +1,6 @@
 ---
 layout:     post                    # 使用的布局（不需要改）
-title:     MySQL的InnoDB存储引擎是怎么设计的？    # 标题 
+title:     MySQL 的 InnoDB 存储引擎是怎么设计的？    # 标题 
 subtitle:   #副标题
 date:       2020-01-11              # 时间
 author:     ZY                      # 作者
