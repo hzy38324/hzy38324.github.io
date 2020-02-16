@@ -177,34 +177,14 @@ select * from student where age = 18;
 
 
 
-# 推荐阅读
+参考
 
-学习 MySQL，我还是一如既往的首推 MySQL 的官方文档，其实学任何技术首先都应该是去看官方文档，奈何有些文档写的实在不好，不过 MySQL 的文档写的是一绝，你可以从其他渠道学习 MySQL，但是建议最终还是要到官网去验证你的想法。
-
-这篇文章参考了官网上的这几个词条：
-
-- [关于 MySQL 如何使用索引的概要介绍: How MySQL Uses Indexes](https://dev.mysql.com/doc/refman/8.0/en/mysql-indexes.html)
-- [关于聚簇索引和二级索引: Clustered and Secondary Indexes](https://dev.mysql.com/doc/refman/5.7/en/innodb-index-types.html)
-
-如果你现在就想知道，为什么 MySQL 选择了 B+树作为索引的数据结构，推荐阅读：
-
+- [How MySQL Uses Indexes](https://dev.mysql.com/doc/refman/8.0/en/mysql-indexes.html)
+- [Clustered and Secondary Indexes](https://dev.mysql.com/doc/refman/5.7/en/innodb-index-types.html)
 - [B-tree 和 Hash 索引的对比](https://dev.mysql.com/doc/refman/8.0/en/index-btree-hash.html)
-
-- B+tree 和 B-tree的对比，来自 Stackoverflow 上的一个问题: [Differences between B trees and B+ trees](https://stackoverflow.com/questions/870218/differences-between-b-trees-and-b-trees)
-
-当然还是那两本书，建议一直放在书桌边上的：
-
+- [Differences between B trees and B+ trees](https://stackoverflow.com/questions/870218/differences-between-b-trees-and-b-trees)
 - 《MySQL 技术内幕》
 - 《高性能 MySQL》
-
-最后，在写这篇文章中，意外发现的数据结构可视化工具，以及我用的画图工具，也推荐给大家： 
-
-- 旧金山大学的数据结构可视化工具：[Data Structure Visualizations](https://www.cs.usfca.edu/~galles/visualization/Algorithms.html) 
-- Drawio，比 Processon 强太多（需要梯子）：[Draw.io](https://www.draw.io/)
-
-End. 
-
-（用心推荐，此处更应该点赞）
 
 
 
