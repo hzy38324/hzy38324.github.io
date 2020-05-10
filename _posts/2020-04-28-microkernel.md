@@ -75,13 +75,25 @@ img
 
 
 
-操作系统
-
-
-
 Dubbo
 
+dubbo 的微内核架构
 
+> 在 RPC 中，Protocol 是核心层，也就是只要有 Protocol + Invoker + Exporter 就可以完成非透明的 RPC 调用。
+
+Protocol + Invoker + Exporter 怎么实现最小粒度的 rpc 调用？
+
+
+
+从核心层开始，把其他层，一一说开去。
+
+
+
+
+
+
+
+操作系统
 
 微内核架构的优缺点
 
