@@ -140,7 +140,7 @@ Dubbo 在本质上是在解决如何进行远程调用（rpc）的问题，通�
 
 还有吗？还有其他哪个模块也可以去掉吗？
 
-我们来看一个极简的 rpc 调用。
+我们来看一个极简的 rpc 调用：
 
  ![](/img/post/2020-04-28-microkernel/simple-rpc.png)  
 
@@ -237,7 +237,7 @@ Protocol 层，其实就是上面提到的，一个最简化的 rpc 模型：
 
  ![](/img/post/2020-04-28-microkernel/chrome.png)  
 
-像 Eclipse 编辑器：
+Eclipse 编辑器：
 
  ![](/img/post/2020-04-28-microkernel/eclipse.png)  
 
