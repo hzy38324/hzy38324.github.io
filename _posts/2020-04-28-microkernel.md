@@ -110,7 +110,7 @@ if (在纽约) {
 >
 > Application logic is divided between independent plug-in modules and the basic core system, providing **extensibility**, **flexibility**, and **isolation** of application features and custom processing logic.
 
- ![](/img/post/2020-04-28-microkernel/couple.png)  
+ ![](/img/post/2020-04-28-microkernel/micro-art.png)  
 
 简单说，就是微内核架构包含两个组件：**核心系统（core system）**和**插件模块（plug-in modules）**，目的是为了扩展性、灵活性和隔离性。
 
