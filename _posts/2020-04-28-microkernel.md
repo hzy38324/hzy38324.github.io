@@ -67,7 +67,7 @@ if (在纽约) {
 
 可以看到，我们把索赔规则这的码耦合到索赔的核心系统中：
 
-img
+![](/img/post/2020-04-28-microkernel/couple.png)  
 
 这会带来两个问题：
 
@@ -76,19 +76,19 @@ img
 
 于是我们把这些规则抽取出来，有个专门的地方去管理这些规则，简单说，就是「解耦」：
 
-img
+![](/img/post/2020-04-28-microkernel/decouple.png)  
 
 这样就解决了「耦合度高」的问题，但其实解耦的还不够彻底。
 
 不同州的规则还是放到一起的，而我们在索赔处理的时候，每次只需要加载一个州的索赔规则，不存在既需要纽约州的规则，又需要加州规则的情况：
 
-img
+![](/img/post/2020-04-28-microkernel/alone-code.png)  
 
 另外，如果后面新来了一个州，想接入索赔系统，那么如何让这个州，在不影响其他州的情况下，配置自己的索赔规则？
 
 于是有了这样一套保险索赔的「微内核架构」：
 
-img
+![](/img/post/2020-04-28-microkernel/claim-process.png)  
 
 简单说就是，这套系统分两个模块：
 
@@ -110,7 +110,7 @@ img
 >
 > Application logic is divided between independent plug-in modules and the basic core system, providing **extensibility**, **flexibility**, and **isolation** of application features and custom processing logic.
 
-img
+ ![](/img/post/2020-04-28-microkernel/couple.png)  
 
 简单说，就是微内核架构包含两个组件：核心系统（core system）和插件模块（plug-in modules），目的是为了扩展性、灵活性和隔离性。
 
@@ -130,7 +130,7 @@ img
 
 Dubbo 在本质上是在解决如何进行远程调用（rpc）的问题，通常一个 rpc 系统都长这个样子：
 
-img
+ ![](/img/post/2020-04-28-microkernel/rpc-architecture.png)  
 
 但是这些都是一个 rpc 系统所必须的吗？
 
@@ -142,7 +142,7 @@ img
 
 我们来看一个极简的 rpc 调用。
 
-img
+ ![](/img/post/2020-04-28-microkernel/simple-rpc.png)  
 
 在这个例子里，服务提供方，和服务消费方，是位于同一块内存的：
 
@@ -152,7 +152,7 @@ img
 
 大道至简，当我们把 rpc 这个模型进行简化后，会发现其实这样就足够了：
 
-img
+ ![](/img/post/2020-04-28-microkernel/simple-rpc-2.png)  
 
 其实这也是 Dubbo 里 inJVM 协议的实现原理。
 
@@ -160,9 +160,9 @@ img
 
 # 什么是 Dubbo 的 core?
 
-我们从系统的角度，看看 Dubbo 的整体设计图：
+我们从系统的角度，看看 [Dubbo 的整体设计图](http://dubbo.apache.org/zh-cn/docs/dev/design.html)：
 
-img
+ ![](/img/post/2020-04-28-microkernel/dubbo-framework.jpg)  
 
 这个是一种传统的分层视角，每一层都有自己要解决的问题，用 DDD 的话来说，就是每个域都有自己的问题空间：
 
@@ -175,11 +175,11 @@ img
 
 但如果我们换个视角来看，之前说过，Dubbo 本质上是为了解决 rpc 的问题，那么其实我们只需要 protocol 层就足够了：
 
-img
+ ![](/img/post/2020-04-28-microkernel/simple-dubbo.png)  
 
 我们也不必再用传统的分层架构来看，而是换一个视角：
 
-img
+ ![](/img/post/2020-04-28-microkernel/Hexagonal_Architecture.svg.png)  
 
 这个叫「六边形架构」（Hexagonal Architecture），也叫「端口-适配器架构」（Ports and Adapters Architecture），这里就不展开细讲了，有兴趣的同学可以谷歌下。
 
@@ -197,7 +197,7 @@ img
 
 Protocol 层，其实就是上面提到的，一个最简化的 rpc 模型：
 
-img
+ ![](/img/post/2020-04-28-microkernel/how-dubbo-protocol-do.png)  
 
 三个角色：
 
@@ -207,11 +207,11 @@ img
 
 很明显，核心角色是 protocol，比如你采用 `injvm` 协议，那就会生成 InjvmInvoker 和 InjvmExporter：
 
-img
+ ![](/img/post/2020-04-28-microkernel/injvm-p-code.png)  
 
 而如果你采用的是 `dubbo` 协议，则会生成 DubboInvoker 和 DubboExporter：
 
-img
+ ![](/img/post/2020-04-28-microkernel/dubbo-p-code.png)  
 
 仔细看代码，你会发现，`dubbo` 协议的 refer 方法，会把 invoker 放进一个 invokers 集合里，`injvm` 协议的 refer 方法，则直接 new 一个 invoker 后就返回了，说明前者是有可能存在多个服务提供者的，而后者只会有一个。
 
@@ -225,7 +225,7 @@ img
 
 其实微内核架构的起源，是操作系统：
 
-img
+ ![](/img/post/2020-04-28-microkernel/op-micro-nel.png)  
 
 左边是 Microkernel，右边是与之对应的 Monolithic Kernel，前者只提供最最基础的操作系统能力，而把更多的能力开放给外界来提供，而后者则倾向于提供一个大而全的操作系统。
 
@@ -235,11 +235,11 @@ img
 
 它被用在了许多客户端应用，像 Chrome 浏览器：
 
-img
+ ![](/img/post/2020-04-28-microkernel/chrome.png)  
 
 像 Eclipse 编辑器：
 
-img
+ ![](/img/post/2020-04-28-microkernel/eclipse.png)  
 
 Chrome 核心就是一个浏览器，用来浏览网页。你可以给它添加各种各样的插件，像翻译插件、广告屏蔽插件等等；而对于第三方开发者，则可以给它开发各种插件。
 
@@ -249,7 +249,7 @@ Eclipse 也一样，核心就是一个编辑器，和记事本没什么区别，
 
 甚至在之后的「六边形架构」、DDD 上，都可以看到「微内核架构」的影子，这两种设计思想被大量用到各种框架、中间件的设计上，比如有赞的 [MAXIM 全链路压测引擎](https://tech.youzan.com/maxim/)：
 
-img
+ ![](/img/post/2020-04-28-microkernel/maxim.jpeg)  
 
 你可以用一两句话概况这种思想，比如：开闭原则、模板模式、把不变的和变化的隔离等等，但是仅仅通过这种标签式的、高浓缩的、刻板印象的语言就来概况它，未免还是太过缺乏细节和激情了。
 
@@ -294,7 +294,7 @@ img
 
 开发难度高这一点，从 [Dubbo 的扩展点重构历程](http://dubbo.apache.org/zh-cn/docs/dev/principals/extension.html)就可以看出来，其实一开始 Dubbo 并不是我们看到的分层架构，而是一步一步演进过来的，每一步都包含这背后开发人员的卧薪尝胆和绞尽脑汁：
 
-img
+ ![](/img/post/2020-04-28-microkernel/dubbo-promotion)  
 
 # 最后
 
@@ -305,6 +305,16 @@ img
 人类历史上迸发过许多璀璨的思想，就像微内核架构其实来源于操作系统的微内核。
 
 我们在回过头去看的时候，可以嘲笑他们有些观念落伍了，但不要忘了一件事，慢一点，再慢一点，不要错过一些可能闪耀出来的那点星光。
+
+
+
+参考：
+
+- [Microkernel Architecture](https://www.oreilly.com/library/view/software-architecture-patterns/9781491971437/ch03.html)
+- [Microkernel](https://en.wikipedia.org/wiki/Microkernel)
+- [微内核架构详解](https://time.geekbang.org/column/article/11610)
+- [Dubbo 框架设计](http://dubbo.apache.org/zh-cn/docs/dev/design.html)
+- [Dubbo 扩展点重构](http://dubbo.apache.org/zh-cn/docs/dev/principals/extension.html)
 
 
 
